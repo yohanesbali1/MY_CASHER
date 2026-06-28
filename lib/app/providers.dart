@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_casher/feature/category_product/presentation/bloc/category_product_bloc.dart';
 import 'package:my_casher/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:my_casher/feature/iventory/presentation/bloc/iventory_bloc.dart';
+import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 import 'package:my_casher/feature/theme/presentation/bloc/theme_bloc.dart';
 
 import '../core/di/injection.dart';
@@ -19,6 +20,9 @@ class AppProviders {
     ),
     BlocProvider<CategoryProductBloc>(
       create: (_) => sl<CategoryProductBloc>()..add(CategoryProductStarted()),
+    ),
+    BlocProvider<ProductBloc>(
+      create: (_) => sl<ProductBloc>()..add(ProductLoad()),
     ),
   ];
 }

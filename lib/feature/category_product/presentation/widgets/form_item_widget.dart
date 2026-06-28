@@ -34,8 +34,6 @@ class _FormItemWidgetState extends State<FormItemWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryProductBloc, CategoryProductState>(
       builder: (context, state) {
-        print("name : ${state.name}");
-        print("error name : ${state.nameError}");
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 12,

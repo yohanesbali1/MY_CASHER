@@ -8,8 +8,7 @@ part 'category_product_state.dart';
 
 class CategoryProductBloc
     extends Bloc<CategoryProductEvent, CategoryProductState> {
-  final _repository = CategoryProductRepository();
-  CategoryProductBloc() : super(CategoryProductState()) {
+  CategoryProductBloc(this._repository) : super(CategoryProductState()) {
     on<CategoryProductEvent>((event, emit) {
       if (event is CategoryProductStarted) {
         _onGetData(event, emit);
@@ -34,6 +33,8 @@ class CategoryProductBloc
       }
     });
   }
+  final CategoryProductRepository _repository;
+
   Future<void> _onGetData(
     CategoryProductStarted event,
     Emitter<CategoryProductState> emit,

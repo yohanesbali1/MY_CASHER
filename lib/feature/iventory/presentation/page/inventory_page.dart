@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_casher/feature/category_product/presentation/page/category_product_page.dart';
 import 'package:my_casher/feature/iventory/presentation/bloc/iventory_bloc.dart';
 import 'package:my_casher/feature/iventory/presentation/widgets/menu_iventory.dart';
+import 'package:my_casher/feature/product/presentation/page/product_page.dart';
 import 'package:my_casher/shared/widget/app_bar/app_app_bar.dart';
 
 class InventoryPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class InventoryPage extends StatelessWidget {
 
   final controller = PageController();
 
-  final pages = [CategoryProductPage()];
+  final pages = [ProductPage(), CategoryProductPage()];
 
   @override
   Widget build(BuildContext context) {
