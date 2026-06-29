@@ -8,9 +8,9 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this._repository) : super(ProductState()) {
-    on<ProductEvent>((event, emit) {
+    on<ProductEvent>((event, emit) async {
       if (event is ProductLoad) {
-        _onGetData(event, emit);
+        await _onGetData(event, emit);
       }
     });
   }
@@ -19,6 +19,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   Future<void> _onGetData(ProductLoad event, Emitter<ProductState> emit) async {
     await Future.delayed(const Duration(seconds: 1));
     final data = await _repository.getCategories();
-    emit(state.copyWith(products: data));
+    emit(state.copyWith(products_data: data));
   }
 }
