@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
@@ -18,6 +19,7 @@ class AppTextField extends StatelessWidget {
     this.enabled = true,
     this.autofocus = false,
     this.obscureText = false,
+    this.inputFormatters,
   });
 
   final TextEditingController? controller;
@@ -42,6 +44,8 @@ class AppTextField extends StatelessWidget {
   final bool autofocus;
   final bool obscureText;
 
+  final List<TextInputFormatter>? inputFormatters;
+
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
@@ -57,6 +61,7 @@ class AppTextField extends StatelessWidget {
       textInputAction: textInputAction,
       maxLines: maxLines,
       onChanged: onChanged,
+      inputFormatters: inputFormatters,
       onSubmitted: onSubmitted,
       style: text.bodyMedium?.copyWith(color: color.onSurface, fontSize: 14),
       decoration: InputDecoration(
@@ -67,6 +72,8 @@ class AppTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
 
+        isDense: true,
+
         filled: true,
         fillColor: color.secondary,
 
@@ -76,10 +83,7 @@ class AppTextField extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
 
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 12,
-        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
 
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),

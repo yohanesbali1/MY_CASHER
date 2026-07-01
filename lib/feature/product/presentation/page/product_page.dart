@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 import 'package:my_casher/feature/product/presentation/widgets/action_button_widget.dart';
-import 'package:my_casher/feature/product/presentation/widgets/item_data.dart';
+import 'package:my_casher/feature/product/presentation/widgets/item_base_widget.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -29,7 +29,7 @@ class ProductPage extends StatelessWidget {
                         children: List.generate(state.products_data.length, (
                           index,
                         ) {
-                          return ItemDataWidget(
+                          return ItemBaseWidget(
                             product_item: state.products_data[index],
                           );
                         }),

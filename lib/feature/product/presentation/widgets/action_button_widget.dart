@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_casher/feature/category_product/presentation/bloc/category_product_bloc.dart';
 import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 
 class ActionButtonWidget extends StatelessWidget {
@@ -22,9 +21,9 @@ class ActionButtonWidget extends StatelessWidget {
           ),
           child: GestureDetector(
             onTap: () {
-              context.read<CategoryProductBloc>().add(
-                const CategoryModeChange(FormMode.create),
-              );
+              // context.read<ProductBloc>().add(
+              //   const ProductModeChange(FormMode.create),
+              // );
             },
             child: Container(
               height: 48,
