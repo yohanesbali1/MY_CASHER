@@ -22,5 +22,7 @@ Future<void> configureDependencies() async {
   sl.registerFactory<CategoryProductBloc>(
     () => CategoryProductBloc(sl<CategoryProductRepository>()),
   );
-  sl.registerFactory<ProductBloc>(() => ProductBloc(sl<ProductRepository>()));
+  sl.registerFactory<ProductBloc>(
+    () => ProductBloc(sl<ProductRepository>(), sl<CategoryProductRepository>()),
+  );
 }

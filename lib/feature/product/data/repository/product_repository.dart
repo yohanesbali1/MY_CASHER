@@ -6,6 +6,21 @@ class ProductRepository {
     return ProductDummy.product_data;
   }
 
+  Future<void> create(Map<String, dynamic> data) async {
+    final int id = ProductDummy.product_data.length + 1;
+    ProductDummy.product_data.add(
+      ProductModels(
+        id: id,
+        name: data['name'],
+        price: data['price'],
+        quantity: data['quantity'],
+        icon: data['icon'],
+        category_id: data['category_id'],
+      ),
+    );
+    return;
+  }
+
   Future<ProductModels> show(int id) async {
     final data = ProductDummy.product_data.firstWhere(
       (element) => element.id == id,

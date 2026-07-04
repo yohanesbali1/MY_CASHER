@@ -20,15 +20,15 @@ class ItemDataWidget extends StatelessWidget {
         return Row(
           spacing: 0,
           children: [
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(12),
-            //   child: Container(
-            //     width: 52,
-            //     height: 52,
-            //     color: Theme.of(context).colorScheme.secondary,
-            //     child: Image.asset(product_item.image, fit: BoxFit.cover),
-            //   ),
-            // ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: 52,
+                height: 52,
+                color: Theme.of(context).colorScheme.secondary,
+                child: Center(child: Text(product_item.icon)),
+              ),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

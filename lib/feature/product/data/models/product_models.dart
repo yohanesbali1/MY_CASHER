@@ -5,7 +5,7 @@ class ProductModels {
   final String name;
   final double price;
   final int quantity;
-  final String image;
+  final String icon;
   final int category_id;
 
   ProductModels({
@@ -13,7 +13,7 @@ class ProductModels {
     required this.name,
     required this.price,
     required this.quantity,
-    required this.image,
+    required this.icon,
     required this.category_id,
   });
 
@@ -22,7 +22,7 @@ class ProductModels {
     String? name,
     double? price,
     int? quantity,
-    String? image,
+    String? icon,
     CategoryProductModel? category,
   }) {
     return ProductModels(
@@ -30,7 +30,7 @@ class ProductModels {
       name: name ?? this.name,
       price: price ?? this.price,
       quantity: quantity ?? this.quantity,
-      image: image ?? this.image,
+      icon: icon ?? this.icon,
       category_id: category?.id ?? this.category_id,
     );
   }

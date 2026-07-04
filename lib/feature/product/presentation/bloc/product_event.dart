@@ -1,6 +1,6 @@
 part of 'product_bloc.dart';
 
-enum ProductField { quantity, price }
+enum ProductField { quantity, price, name, icon, categoryId }
 
 @immutable
 sealed class ProductEvent {
@@ -8,6 +8,8 @@ sealed class ProductEvent {
 }
 
 class ProductLoad extends ProductEvent {}
+
+class ProductReset extends ProductEvent {}
 
 class ProductModeChange extends ProductEvent {
   final FormMode? mode;
@@ -19,6 +21,10 @@ class ProductFieldChanged extends ProductEvent {
   final dynamic value;
 
   const ProductFieldChanged({required this.field, required this.value});
+}
+
+class ProductCreate extends ProductEvent {
+  const ProductCreate();
 }
 
 class ProductShowData extends ProductEvent {
