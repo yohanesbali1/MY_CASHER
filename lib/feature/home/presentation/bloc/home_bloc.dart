@@ -1,11 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_casher/feature/category_product/presentation/bloc/category_product_bloc.dart';
+import 'package:my_casher/feature/iventory/presentation/bloc/iventory_bloc.dart';
+import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeState()) {
+  HomeBloc({required this.iventoryBloc}) : super(HomeState()) {
     on<HomeEvent>((event, emit) {
       if (event is HomeInitialized) {
         _onInitialized(event, emit);
@@ -15,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
     });
   }
+  final IventoryBloc iventoryBloc;
   Future<void> _onInitialized(
     HomeInitialized event,
     Emitter<HomeState> emit,
@@ -29,5 +33,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> _onChanged(HomeTabChanged event, Emitter<HomeState> emit) async {
     emit(state.copyWith(currentIndex: event.index));
+    switch (event.index) {
+      case 0:
+        break;
+      case 1:
+        iventoryBloc.add(IventoryStarted());
+        break;
+    }
   }
 }

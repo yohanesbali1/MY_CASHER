@@ -15,14 +15,8 @@ class AppProviders {
     BlocProvider<HomeBloc>(
       create: (_) => sl<HomeBloc>()..add(HomeInitialized()),
     ),
-    BlocProvider<IventoryBloc>(
-      create: (_) => sl<IventoryBloc>()..add(IventoryTabChanged(0)),
-    ),
-    BlocProvider<CategoryProductBloc>(
-      create: (_) => sl<CategoryProductBloc>()..add(CategoryProductStarted()),
-    ),
-    BlocProvider<ProductBloc>(
-      create: (_) => sl<ProductBloc>()..add(ProductLoad()),
-    ),
+    BlocProvider<IventoryBloc>(create: (_) => sl<IventoryBloc>()),
+    BlocProvider<CategoryProductBloc>(create: (_) => sl<CategoryProductBloc>()),
+    BlocProvider<ProductBloc>(create: (_) => sl<ProductBloc>()),
   ];
 }

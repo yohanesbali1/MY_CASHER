@@ -19,7 +19,7 @@ class ProductState {
   final int? categoryId;
   final String? categoryError;
 
-  final double price;
+  final int price;
   final String? priceError;
 
   final int quantity;
@@ -46,7 +46,7 @@ class ProductState {
     this.nameError,
     this.categoryId,
     this.categoryError,
-    this.status,
+    this.status = FormMode.list,
     this.id,
     this.category,
   });
@@ -56,7 +56,7 @@ class ProductState {
     Object? category_data = _unset,
     Object? show_product_data = _unset,
     bool? isLoading,
-    double? price,
+    int? price,
     Object? priceError = _unset,
     int? quantity,
     Object? quantityError = _unset,

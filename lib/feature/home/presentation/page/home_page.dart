@@ -20,9 +20,6 @@ class HomePage extends StatelessWidget {
           body: PageView(
             controller: controller,
             physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (index) {
-              context.read<HomeBloc>().add(HomeTabChanged(index));
-            },
             children: pages,
           ),
           bottomNavigationBar: HomeBottomNavigation(

@@ -250,6 +250,11 @@ class _FormItemAddWidgetState extends State<FormItemAddWidget> {
                     );
                   }).toList(),
                 ),
+                if (state.categoryError != null)
+                  Text(
+                    state.categoryError!,
+                    style: text.bodySmall?.copyWith(color: color.error),
+                  ),
               ],
             ),
           ],

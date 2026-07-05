@@ -26,7 +26,9 @@ class AppRouter {
         builder: (context, state) {
           final bloc = state.extra as ProductBloc;
 
-          bloc..add(ProductReset());
+          bloc
+            ..add(ProductReset())
+            ..add(ProductModeChange(FormMode.create));
           return BlocProvider.value(
             value: state.extra as ProductBloc,
             child: const AddProductPage(),

@@ -18,7 +18,7 @@ class CategoryProductState {
   const CategoryProductState({
     this.data = const [],
     this.isLoading = false,
-    this.status,
+    this.status = FormMode.list,
     this.name = '',
     this.nameError,
     this.id,
@@ -27,7 +27,7 @@ class CategoryProductState {
   CategoryProductState copyWith({
     List<CategoryProductModel>? data,
     bool? isLoading,
-    FormMode? status,
+    Object? status = _unset,
     String? name,
     Object? nameError = _unset,
     int? id,
@@ -35,7 +35,7 @@ class CategoryProductState {
     return CategoryProductState(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
-      status: status ?? this.status,
+      status: identical(status, _unset) ? this.status : status as FormMode?,
       name: name ?? this.name,
       nameError: identical(nameError, _unset)
           ? this.nameError

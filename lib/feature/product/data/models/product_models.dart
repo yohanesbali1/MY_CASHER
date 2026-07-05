@@ -3,7 +3,7 @@ import 'package:my_casher/feature/category_product/data/models/category_product_
 class ProductModels {
   final int id;
   final String name;
-  final double price;
+  final int price;
   final int quantity;
   final String icon;
   final int category_id;
@@ -20,7 +20,7 @@ class ProductModels {
   ProductModels copyWith({
     int? id,
     String? name,
-    double? price,
+    int? price,
     int? quantity,
     String? icon,
     CategoryProductModel? category,

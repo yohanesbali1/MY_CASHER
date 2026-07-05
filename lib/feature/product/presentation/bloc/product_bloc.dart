@@ -59,6 +59,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onGetData(ProductLoad event, Emitter<ProductState> emit) async {
+    emit(state.copyWith(isLoading: true, status: FormMode.list));
     await Future.delayed(const Duration(seconds: 1));
     final data = await _repository.getData();
     emit(state.copyWith(products_data: data));
@@ -83,7 +84,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       case ProductField.price:
         emit(
           state.copyWith(
-            price: double.tryParse(event.value) ?? 0,
+            price: int.tryParse(event.value) ?? 0,
             priceError: event.value.trim().isEmpty ? 'Harga wajib diisi' : null,
           ),
         );
@@ -167,6 +168,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       };
       await _repository.create(payload);
       emit(state.copyWith(status: FormMode.list));
+      Future.delayed(const Duration(seconds: 10));
       _resetField(emit);
     } catch (e) {
       rethrow;

@@ -39,8 +39,7 @@ class CategoryProductBloc
     CategoryProductStarted event,
     Emitter<CategoryProductState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-
+    emit(state.copyWith(isLoading: true, data: [], status: FormMode.list));
     final categories = await _repository.getCategories();
 
     emit(state.copyWith(isLoading: false, data: categories));
@@ -81,7 +80,7 @@ class CategoryProductBloc
       if (isValid == false) return;
 
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 2));
       final payload = {'name': state.name, 'isEdit': false};
       await _repository.create(payload);
       emit(state.copyWith(status: FormMode.list));
@@ -99,7 +98,6 @@ class CategoryProductBloc
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
       final categories = await _repository.show(event.id);
       emit(
         state.copyWith(
@@ -121,9 +119,10 @@ class CategoryProductBloc
     Emitter<CategoryProductState> emit,
   ) async {
     try {
-      _validateForm(emit);
+      final isValid = _validateForm(emit);
+      if (isValid == false) return;
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 2));
       final payload = {'name': state.name, 'isEdit': false};
       await _repository.update(state.id!, payload!);
       emit(state.copyWith(status: FormMode.list));
@@ -141,7 +140,7 @@ class CategoryProductBloc
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 2));
       await _repository.delete(event.id);
     } catch (e) {
       rethrow;
@@ -152,7 +151,6 @@ class CategoryProductBloc
 
   bool _validateForm(Emitter<CategoryProductState> emit) {
     final nameError = state.name.trim().isEmpty ? 'Nama wajib diisi' : null;
-
     emit(state.copyWith(nameError: nameError));
 
     return nameError == null;

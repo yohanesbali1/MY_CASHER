@@ -11,8 +11,8 @@ class MenuInventory extends StatelessWidget {
   });
 
   static const items = [
-    (icon: Icons.inventory_2_outlined, label: 'Inventaris'),
-    (icon: Icons.bar_chart_outlined, label: 'Statistik'),
+    (icon: Icons.inventory_2_outlined, label: 'Produk'),
+    // (icon: Icons.bar_chart_outlined, label: 'Statistik'),
     (icon: Icons.sell_outlined, label: 'Kategori'),
   ];
 

@@ -10,19 +10,29 @@ import 'package:my_casher/feature/theme/presentation/bloc/theme_bloc.dart';
 final sl = GetIt.instance;
 
 Future<void> configureDependencies() async {
+  sl.registerLazySingleton<ThemeBloc>(() => ThemeBloc());
+
   sl.registerLazySingleton<CategoryProductRepository>(
     () => CategoryProductRepository(),
   );
   sl.registerLazySingleton<ProductRepository>(() => ProductRepository());
 
-  sl.registerLazySingleton<ThemeBloc>(() => ThemeBloc());
+  sl.registerLazySingleton<ProductBloc>(
+    () => ProductBloc(sl<ProductRepository>(), sl<CategoryProductRepository>()),
+  );
 
-  sl.registerFactory<HomeBloc>(() => HomeBloc());
-  sl.registerFactory<IventoryBloc>(() => IventoryBloc());
-  sl.registerFactory<CategoryProductBloc>(
+  sl.registerLazySingleton<CategoryProductBloc>(
     () => CategoryProductBloc(sl<CategoryProductRepository>()),
   );
-  sl.registerFactory<ProductBloc>(
-    () => ProductBloc(sl<ProductRepository>(), sl<CategoryProductRepository>()),
+
+  sl.registerLazySingleton<IventoryBloc>(
+    () => IventoryBloc(
+      categoryBloc: sl<CategoryProductBloc>(),
+      productBloc: sl<ProductBloc>(),
+    ),
+  );
+
+  sl.registerLazySingleton<HomeBloc>(
+    () => HomeBloc(iventoryBloc: sl<IventoryBloc>()),
   );
 }

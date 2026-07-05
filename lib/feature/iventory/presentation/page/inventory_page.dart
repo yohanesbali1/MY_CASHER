@@ -15,7 +15,10 @@ class InventoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<IventoryBloc, IventoryState>(
+    return BlocConsumer<IventoryBloc, IventoryState>(
+      listener: (context, state) {
+        controller.jumpToPage(state.currentIndex);
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: const AppAppBar(title: 'Inventory'),
@@ -31,9 +34,6 @@ class InventoryPage extends StatelessWidget {
                 child: PageView(
                   controller: controller,
                   physics: const NeverScrollableScrollPhysics(),
-                  onPageChanged: (index) {
-                    context.read<IventoryBloc>().add(IventoryTabChanged(index));
-                  },
                   children: pages,
                 ),
               ),
