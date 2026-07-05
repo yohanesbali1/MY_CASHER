@@ -19,7 +19,7 @@ class ItemBaseWidget extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             context.read<ProductBloc>().add(
-              ProductShowData(id: product_item.id),
+              ProductShowData(id: product_item.id as int),
             );
           },
           child: Container(
@@ -30,7 +30,8 @@ class ItemBaseWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: Theme.of(context).dividerColor),
             ),
-            child: state.status == FormMode.update
+            child:
+                state.id == product_item.id && state.status == FormMode.update
                 ? ItemUpdateWidget()
                 : ItemDataWidget(product_item: product_item),
           ),

@@ -1,0 +1,64 @@
+import 'package:my_casher/core/database/app_database.dart';
+import 'package:my_casher/core/database/tables/product_table.dart';
+import 'package:my_casher/feature/product/data/models/product_models.dart';
+
+class ProductLocalDatasource {
+  Future<List<ProductModels>> getData() async {
+    final db = await AppDatabase.instance.database;
+
+    final result = await db.query(
+      ProductTable.table,
+      orderBy: '${ProductTable.id} DESC',
+    );
+
+    return result.map((e) => ProductModels.fromMap(e)).toList();
+  }
+
+  Future<void> create(ProductModels product) async {
+    final db = await AppDatabase.instance.database;
+    final map = product.toMap();
+    await db.insert(ProductTable.table, map);
+    return;
+  }
+
+  Future<ProductModels> show(int id) async {
+    final db = await AppDatabase.instance.database;
+
+    final result = await db.query(
+      ProductTable.table,
+      where: '${ProductTable.id} = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+
+    if (result.isEmpty) {
+      throw Exception('Product tidak ditemukan');
+    }
+
+    return ProductModels.fromMap(result.first);
+  }
+
+  Future<void> update(ProductModels product) async {
+    final db = await AppDatabase.instance.database;
+
+    await db.update(
+      ProductTable.table,
+      {
+        ProductTable.price: product.price,
+        ProductTable.quantity: product.quantity,
+      },
+      where: '${ProductTable.id} = ?',
+      whereArgs: [product.id],
+    );
+  }
+
+  Future<void> delete(int id) async {
+    final db = await AppDatabase.instance.database;
+
+    await db.delete(
+      ProductTable.table,
+      where: '${ProductTable.id} = ?',
+      whereArgs: [id],
+    );
+  }
+}

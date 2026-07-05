@@ -1,47 +1,28 @@
-import 'package:my_casher/feature/product/data/dummy/product_dummy.dart';
+import 'package:my_casher/feature/product/data/datasource/product_local_datasource.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
 
 class ProductRepository {
-  Future<List<ProductModels>> getData() async {
-    return ProductDummy.product_data;
+  final ProductLocalDatasource datasource;
+
+  ProductRepository(this.datasource);
+
+  Future<List<ProductModels>> getData() {
+    return datasource.getData();
   }
 
-  Future<void> create(Map<String, dynamic> data) async {
-    final int id = ProductDummy.product_data.length + 1;
-    ProductDummy.product_data.add(
-      ProductModels(
-        id: id,
-        name: data['name'],
-        price: data['price'],
-        quantity: data['quantity'],
-        icon: data['icon'],
-        category_id: data['category_id'],
-      ),
-    );
-    return;
+  Future<void> create(ProductModels product) {
+    return datasource.create(product);
   }
 
-  Future<ProductModels> show(int id) async {
-    final data = ProductDummy.product_data.firstWhere(
-      (element) => element.id == id,
-    );
-    return data;
+  Future<ProductModels> show(int id) {
+    return datasource.show(id);
   }
 
-  Future<void> update(int id, Map<String, dynamic> data) async {
-    final index = ProductDummy.product_data.indexWhere((e) => e.id == id);
-
-    if (index == -1) return;
-
-    final old = ProductDummy.product_data[index];
-
-    ProductDummy.product_data[index] = old.copyWith(
-      price: data['price'],
-      quantity: data['quantity'],
-    );
+  Future<void> update(ProductModels product) {
+    return datasource.update(product);
   }
 
-  Future<void> delete(int id) async {
-    ProductDummy.product_data.removeWhere((e) => e.id == id);
+  Future<void> delete(int id) {
+    return datasource.delete(id);
   }
 }

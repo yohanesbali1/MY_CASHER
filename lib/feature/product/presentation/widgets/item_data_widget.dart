@@ -26,7 +26,7 @@ class ItemDataWidget extends StatelessWidget {
                 width: 52,
                 height: 52,
                 color: Theme.of(context).colorScheme.secondary,
-                child: Center(child: Text(product_item.icon)),
+                child: Center(child: Text(product_item.icon ?? '')),
               ),
             ),
             const SizedBox(width: 12),
@@ -35,7 +35,7 @@ class ItemDataWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product_item.name,
+                    "${product_item.name}",
                     style: text.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,

@@ -62,7 +62,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(state.copyWith(isLoading: true, status: FormMode.list));
     await Future.delayed(const Duration(seconds: 1));
     final data = await _repository.getData();
-    emit(state.copyWith(products_data: data));
+    emit(state.copyWith(products_data: data, isLoading: false));
   }
 
   Future<void> _onFieldChanged(
@@ -158,15 +158,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         return;
       }
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
-      final payload = {
-        'price': state.price,
-        'quantity': state.quantity,
-        'name': state.name,
-        'category_id': state.categoryId,
-        'icon': state.icon,
-      };
-      await _repository.create(payload);
+      final product = ProductModels(
+        name: state.name,
+        price: state.price,
+        quantity: state.quantity,
+        category_id: state.categoryId,
+        icon: state.icon,
+      );
+      await _repository.create(product);
+      await _onGetData(ProductLoad(), emit);
       emit(state.copyWith(status: FormMode.list));
       Future.delayed(const Duration(seconds: 10));
       _resetField(emit);
@@ -184,9 +184,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     try {
       _validateForm(emit, FormMode.update);
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
-      final payload = {'price': state.price, 'quantity': state.quantity};
-      await _repository.update(state.id!, payload!);
+      final payload = ProductModels(
+        id: state.id,
+        price: state.price,
+        quantity: state.quantity,
+      );
+      await _repository.update(payload);
+      await _onGetData(ProductLoad(), emit);
       emit(state.copyWith(status: FormMode.list));
       _resetField(emit);
     } catch (e) {
@@ -202,8 +206,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
-      Future.delayed(const Duration(seconds: 10));
       await _repository.delete(event.id);
+      await _onGetData(ProductLoad(), emit);
       emit(state.copyWith(status: FormMode.list));
       _resetField(emit);
     } catch (e) {

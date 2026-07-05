@@ -7,9 +7,13 @@ sealed class ProductEvent {
   const ProductEvent();
 }
 
-class ProductLoad extends ProductEvent {}
+class ProductLoad extends ProductEvent {
+  const ProductLoad();
+}
 
-class ProductReset extends ProductEvent {}
+class ProductReset extends ProductEvent {
+  const ProductReset();
+}
 
 class ProductModeChange extends ProductEvent {
   final FormMode? mode;
