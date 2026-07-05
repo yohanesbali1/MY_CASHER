@@ -1,4 +1,5 @@
 import 'package:my_casher/core/database/app_database.dart';
+import 'package:my_casher/core/database/tables/category_table.dart';
 import 'package:my_casher/core/database/tables/product_table.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
 
@@ -6,10 +7,15 @@ class ProductLocalDatasource {
   Future<List<ProductModels>> getData() async {
     final db = await AppDatabase.instance.database;
 
-    final result = await db.query(
-      ProductTable.table,
-      orderBy: '${ProductTable.id} DESC',
-    );
+    final result = await db.rawQuery('''
+    SELECT
+      p.*,
+      c.${CategoryTable.name} AS category_name
+    FROM ${ProductTable.table} p
+    LEFT JOIN ${CategoryTable.table} c
+      ON p.${ProductTable.categoryId} = c.${CategoryTable.id}
+    ORDER BY p.${ProductTable.id} DESC
+  ''');
 
     return result.map((e) => ProductModels.fromMap(e)).toList();
   }

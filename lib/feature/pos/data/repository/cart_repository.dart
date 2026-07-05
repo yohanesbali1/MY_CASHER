@@ -1,47 +1,53 @@
-// import 'package:my_casher/feature/product/data/dummy/product_dummy.dart';
-// import 'package:my_casher/feature/product/data/models/product_models.dart';
+import 'package:my_casher/feature/pos/data/datasource/cart_local_datasource.dart';
+import 'package:my_casher/feature/pos/data/models/cart_item_model.dart';
+import 'package:my_casher/feature/product/data/models/product_models.dart';
 
-// class CartRepository {
-//   Future<List<ProductModels>> getData() async {
-//     return CartDummy.product_data;
-//   }
+class CartRepository {
+  final CartLocalDatasource _datasource;
 
-//   Future<void> create(Map<String, dynamic> data) async {
-//     final int id = ProductDummy.product_data.length + 1;
-//     ProductDummy.product_data.add(
-//       ProductModels(
-//         id: id,
-//         name: data['name'],
-//         price: data['price'],
-//         quantity: data['quantity'],
-//         icon: data['icon'],
-//         category_id: data['category_id'],
-//       ),
-//     );
-//     return;
-//   }
+  CartRepository(this._datasource);
 
-//   Future<ProductModels> show(int id) async {
-//     final data = ProductDummy.product_data.firstWhere(
-//       (element) => element.id == id,
-//     );
-//     return data;
-//   }
+  Future<List<CartItemModel>> getData() {
+    return _datasource.getData();
+  }
 
-//   Future<void> update(int id, Map<String, dynamic> data) async {
-//     final index = ProductDummy.product_data.indexWhere((e) => e.id == id);
+  Future<void> addProduct(ProductModels product) async {
+    final cart = await _datasource.findByProductId(product.id!);
 
-//     if (index == -1) return;
+    if (cart != null) {
+      await _datasource.updateQuantity(cart.id, cart.quantity + 1);
+    } else {
+      await _datasource.create(
+        CartItemModel(id: 0, product: product, quantity: 1),
+      );
+    }
+  }
 
-//     final old = ProductDummy.product_data[index];
+  Future<void> increase(int cartId) async {
+    final items = await getData();
 
-//     ProductDummy.product_data[index] = old.copyWith(
-//       price: data['price'],
-//       quantity: data['quantity'],
-//     );
-//   }
+    final item = items.firstWhere((e) => e.id == cartId);
 
-//   Future<void> delete(int id) async {
-//     ProductDummy.product_data.removeWhere((e) => e.id == id);
-//   }
-// }
+    await _datasource.updateQuantity(cartId, item.quantity + 1);
+  }
+
+  Future<void> decrease(int cartId) async {
+    final items = await getData();
+
+    final item = items.firstWhere((e) => e.id == cartId);
+
+    if (item.quantity <= 1) {
+      await _datasource.delete(cartId);
+    } else {
+      await _datasource.updateQuantity(cartId, item.quantity - 1);
+    }
+  }
+
+  Future<void> delete(int cartId) {
+    return _datasource.delete(cartId);
+  }
+
+  Future<void> clear() {
+    return _datasource.clear();
+  }
+}

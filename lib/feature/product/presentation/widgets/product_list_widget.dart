@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
 import 'package:my_casher/feature/product/presentation/widgets/item_base_widget.dart';
-import 'package:my_casher/feature/product/presentation/widgets/product_list_empty_widget.dart';
 import 'package:my_casher/feature/product/presentation/widgets/product_list_skeleton.dart';
+import 'package:my_casher/shared/widget/empty/empty_widget.dart';
 
 class ProductListWidget extends StatelessWidget {
   const ProductListWidget({
@@ -29,7 +29,12 @@ class ProductListWidget extends StatelessWidget {
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: products.isEmpty
-              ? ProductListEmptyWidget()
+              ? EmptyStateWidget(
+                  icon: Icons.inventory_2_outlined,
+                  title: 'Belum Ada Produk',
+                  description:
+                      'Tambahkan produk baru \n untuk mulai mengelola inventori.',
+                )
               : Column(
                   children: products
                       .map(

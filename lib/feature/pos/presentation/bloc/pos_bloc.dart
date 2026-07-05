@@ -25,7 +25,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     emit(state.copyWith(isLoading: true));
     await Future.delayed(const Duration(seconds: 1));
     final data = await _repository.getData();
-    final data_categoru = await _categoryRepository.getCategories();
+    final data_categoru = await _categoryRepository.getData();
     emit(state.copyWith(products_data: data, category_data: data_categoru));
   }
 

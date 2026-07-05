@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_casher/app/routers.dart';
+import 'package:my_casher/core/theme/app_scroll_behavore.dart';
 import 'package:my_casher/feature/theme/presentation/bloc/theme_bloc.dart';
 import 'package:my_casher/feature/theme/theme/dark_theme.dart';
 import 'package:my_casher/feature/theme/theme/light_theme.dart';

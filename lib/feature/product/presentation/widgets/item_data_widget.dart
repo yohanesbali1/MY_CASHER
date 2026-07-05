@@ -42,7 +42,7 @@ class ItemDataWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Food',
+                    '${product_item.categoryName ?? 'Tidak ada kategori'}',
                     style: text.labelSmall?.copyWith(
                       color: color.onSurface.withValues(alpha: .60),
                     ),

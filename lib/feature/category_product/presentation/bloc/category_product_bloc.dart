@@ -9,9 +9,9 @@ part 'category_product_state.dart';
 class CategoryProductBloc
     extends Bloc<CategoryProductEvent, CategoryProductState> {
   CategoryProductBloc(this._repository) : super(CategoryProductState()) {
-    on<CategoryProductEvent>((event, emit) {
+    on<CategoryProductEvent>((event, emit) async {
       if (event is CategoryProductStarted) {
-        _onGetData(event, emit);
+        await _onGetData(event, emit);
       }
       if (event is CategoryModeChange) {
         _onChangeMode(event, emit);
@@ -20,16 +20,16 @@ class CategoryProductBloc
         _onFieldChanged(event, emit);
       }
       if (event is CategoryProductCreate) {
-        _onCreate(event, emit);
+        await _onCreate(event, emit);
       }
       if (event is CategoryShowData) {
-        _onShowData(event, emit);
+        await _onShowData(event, emit);
       }
       if (event is CategoryProductUpdate) {
-        _onUpdate(event, emit);
+        await _onUpdate(event, emit);
       }
       if (event is CategoryProductDelete) {
-        _onDelete(event, emit);
+        await _onDelete(event, emit);
       }
     });
   }
@@ -40,8 +40,8 @@ class CategoryProductBloc
     Emitter<CategoryProductState> emit,
   ) async {
     emit(state.copyWith(isLoading: true, data: [], status: FormMode.list));
-    final categories = await _repository.getCategories();
-
+    await Future.delayed(const Duration(seconds: 3));
+    final categories = await _repository.getData();
     emit(state.copyWith(isLoading: false, data: categories));
   }
 
@@ -80,9 +80,9 @@ class CategoryProductBloc
       if (isValid == false) return;
 
       emit(state.copyWith(isLoading: true));
-      await Future.delayed(const Duration(seconds: 2));
-      final payload = {'name': state.name, 'isEdit': false};
+      final payload = CategoryProductModel(name: state.name, isEdit: true);
       await _repository.create(payload);
+      await _onGetData(CategoryProductStarted(), emit);
       emit(state.copyWith(status: FormMode.list));
       _resetField(emit);
     } catch (e) {
@@ -122,9 +122,9 @@ class CategoryProductBloc
       final isValid = _validateForm(emit);
       if (isValid == false) return;
       emit(state.copyWith(isLoading: true));
-      await Future.delayed(const Duration(seconds: 2));
-      final payload = {'name': state.name, 'isEdit': false};
-      await _repository.update(state.id!, payload!);
+      final payload = CategoryProductModel(id: state.id, name: state.name);
+      await _repository.update(payload);
+      await _onGetData(CategoryProductStarted(), emit);
       emit(state.copyWith(status: FormMode.list));
       _resetField(emit);
     } catch (e) {
@@ -142,6 +142,7 @@ class CategoryProductBloc
       emit(state.copyWith(isLoading: true));
       await Future.delayed(const Duration(seconds: 2));
       await _repository.delete(event.id);
+      await _onGetData(CategoryProductStarted(), emit);
     } catch (e) {
       rethrow;
     } finally {

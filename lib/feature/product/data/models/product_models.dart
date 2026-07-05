@@ -8,6 +8,7 @@ class ProductModels {
   final int quantity;
   final String? icon;
   final int? category_id;
+  final String? categoryName;
 
   ProductModels({
     this.id,
@@ -16,6 +17,7 @@ class ProductModels {
     required this.quantity,
     this.icon,
     this.category_id,
+    this.categoryName,
   });
 
   ProductModels copyWith({
@@ -55,6 +57,7 @@ class ProductModels {
       quantity: map[ProductTable.quantity] as int,
       icon: map[ProductTable.icon] as String,
       category_id: map[ProductTable.categoryId] as int,
+      categoryName: map['category_name'] as String?,
     );
   }
 }

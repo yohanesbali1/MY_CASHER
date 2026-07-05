@@ -17,7 +17,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
       if (event is ProductReset) {
         _resetField(emit);
-        _onGetCategory(event, emit);
+        await _onGetCategory(event, emit);
       }
       if (event is ProductFieldChanged) {
         await _onFieldChanged(event, emit);
@@ -54,7 +54,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     ProductReset event,
     Emitter<ProductState> emit,
   ) async {
-    final data = await _categoryRepository.getCategories();
+    final data = await _categoryRepository.getData();
     emit(state.copyWith(category_data: data));
   }
 

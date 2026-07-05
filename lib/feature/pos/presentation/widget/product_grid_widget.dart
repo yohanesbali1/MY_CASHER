@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_casher/core/helpers/currency_helper.dart';
 import 'package:my_casher/feature/pos/data/models/cart_item_model.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
+import 'package:my_casher/shared/widget/empty/empty_widget.dart';
 
 class ProductGridWidget extends StatelessWidget {
   const ProductGridWidget({
@@ -23,16 +24,11 @@ class ProductGridWidget extends StatelessWidget {
     int crossAxisCount = width >= 600 ? 3 : 2;
     if (products.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search_off_rounded, size: 42, color: color.outline),
-            const SizedBox(height: 10),
-            Text(
-              "Produk tidak ditemukan",
-              style: text.bodyMedium?.copyWith(color: color.outline),
-            ),
-          ],
+        child: EmptyStateWidget(
+          icon: Icons.inventory_2_outlined,
+          title: 'Produk Tidak Ditemukan',
+          description:
+              'Silahkan refresh halaman ini \nuntuk menampilkan produk.',
         ),
       );
     }
@@ -40,7 +36,6 @@ class ProductGridWidget extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(16),
       itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
@@ -82,8 +77,8 @@ class ProductGridWidget extends StatelessWidget {
                     ),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
                         child: Center(
