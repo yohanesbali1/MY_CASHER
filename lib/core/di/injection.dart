@@ -61,6 +61,7 @@ Future<void> configureDependencies() async {
     () => PosBloc(
       repository: sl<ProductRepository>(),
       categoryRepository: sl<CategoryProductRepository>(),
+      cartRepository: sl<CartRepository>(),
     ),
   );
 }

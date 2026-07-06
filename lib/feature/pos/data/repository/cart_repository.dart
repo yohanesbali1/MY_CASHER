@@ -7,18 +7,18 @@ class CartRepository {
 
   CartRepository(this._datasource);
 
-  Future<List<CartItemModel>> getData() {
-    return _datasource.getData();
+  Future<List<CartItemModel>> getData() async {
+    final data = await _datasource.getData();
+    return data;
   }
 
   Future<void> addProduct(ProductModels product) async {
     final cart = await _datasource.findByProductId(product.id!);
-
     if (cart != null) {
-      await _datasource.updateQuantity(cart.id, cart.quantity + 1);
+      await _datasource.updateQuantity(cart.id!, cart.quantity + 1, cart.price);
     } else {
       await _datasource.create(
-        CartItemModel(id: 0, product: product, quantity: 1),
+        CartItemModel(product: product, quantity: 1, price: product.price * 1),
       );
     }
   }
@@ -28,7 +28,7 @@ class CartRepository {
 
     final item = items.firstWhere((e) => e.id == cartId);
 
-    await _datasource.updateQuantity(cartId, item.quantity + 1);
+    await _datasource.updateQuantity(cartId, item.quantity + 1, item.price);
   }
 
   Future<void> decrease(int cartId) async {
@@ -39,7 +39,7 @@ class CartRepository {
     if (item.quantity <= 1) {
       await _datasource.delete(cartId);
     } else {
-      await _datasource.updateQuantity(cartId, item.quantity - 1);
+      await _datasource.updateQuantity(cartId, item.quantity - 1, item.price);
     }
   }
 

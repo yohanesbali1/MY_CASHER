@@ -10,8 +10,11 @@ class CartLocalDatasource {
 
     final result = await db.rawQuery('''
       SELECT
-        c.id,
-        c.quantity,
+        c.id AS cart_id,
+        c.quantity AS cart_quantity,
+        c.price AS cart_price,
+        c.subtotal AS cart_subtotal,
+
         p.*
       FROM ${CartTable.table} c
       INNER JOIN ${ProductTable.table} p
@@ -21,8 +24,10 @@ class CartLocalDatasource {
 
     return result.map((map) {
       return CartItemModel(
-        id: map[CartTable.id] as int,
-        quantity: map[CartTable.quantity] as int,
+        id: map['cart_id'] as int,
+        quantity: map['cart_quantity'] as int,
+        price: (map['cart_price'] as num).toDouble(),
+        subtotal: (map['cart_subtotal'] as num).toDouble(),
         product: ProductModels.fromMap(map),
       );
     }).toList();
@@ -30,19 +35,24 @@ class CartLocalDatasource {
 
   Future<void> create(CartItemModel item) async {
     final db = await AppDatabase.instance.database;
-
     await db.insert(CartTable.table, {
       CartTable.productId: item.product.id,
       CartTable.quantity: item.quantity,
+      CartTable.price: item.product.price,
+      CartTable.subtotal: item.product.price * item.quantity,
     });
   }
 
-  Future<void> updateQuantity(int id, int quantity) async {
+  Future<void> updateQuantity(int id, int quantity, double price) async {
     final db = await AppDatabase.instance.database;
 
     await db.update(
       CartTable.table,
-      {CartTable.quantity: quantity},
+      {
+        CartTable.quantity: quantity,
+        CartTable.subtotal: quantity * price,
+        CartTable.price: price,
+      },
       where: '${CartTable.id} = ?',
       whereArgs: [id],
     );
@@ -70,8 +80,11 @@ class CartLocalDatasource {
     final result = await db.rawQuery(
       '''
       SELECT
-        c.id,
-        c.quantity,
+        c.id AS cart_id,
+        c.quantity AS cart_quantity,
+        c.price AS cart_price,
+        c.subtotal AS cart_subtotal,
+
         p.*
       FROM ${CartTable.table} c
       INNER JOIN ${ProductTable.table} p
@@ -87,8 +100,10 @@ class CartLocalDatasource {
     final map = result.first;
 
     return CartItemModel(
-      id: map[CartTable.id] as int,
-      quantity: map[CartTable.quantity] as int,
+      id: map['cart_id'] as int,
+      quantity: map['cart_quantity'] as int,
+      price: (map['cart_price'] as num).toDouble(),
+      subtotal: (map['cart_subtotal'] as num).toDouble(),
       product: ProductModels.fromMap(map),
     );
   }

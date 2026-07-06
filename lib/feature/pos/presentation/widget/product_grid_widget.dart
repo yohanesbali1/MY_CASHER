@@ -34,8 +34,8 @@ class ProductGridWidget extends StatelessWidget {
     }
 
     return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      // shrinkWrap: true,
+      physics: const AlwaysScrollableScrollPhysics(),
       itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,

@@ -81,6 +81,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
+      shape: Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
       centerTitle: true,
       actions: actions,
     );
