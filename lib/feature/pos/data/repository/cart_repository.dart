@@ -28,6 +28,10 @@ class CartRepository {
 
     final item = items.firstWhere((e) => e.id == cartId);
 
+    if (item.quantity >= item.product.quantity) {
+      return;
+    }
+
     await _datasource.updateQuantity(cartId, item.quantity + 1, item.price);
   }
 
@@ -41,6 +45,10 @@ class CartRepository {
     } else {
       await _datasource.updateQuantity(cartId, item.quantity - 1, item.price);
     }
+  }
+
+  Future<void> updateQuantity(int id, int quantity, double price) {
+    return _datasource.updateQuantity(id, quantity, price);
   }
 
   Future<void> delete(int cartId) {

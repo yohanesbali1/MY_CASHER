@@ -63,7 +63,14 @@ class CartItemWidget extends StatelessWidget {
                 children: [
                   InkWell(
                     borderRadius: BorderRadius.circular(8),
-                    onTap: () {},
+                    onTap: () {
+                      if (item?.id == null) {
+                        return;
+                      }
+                      context.read<PosBloc>().add(
+                        ChangeQuantityCart(cart_id: item.id!, type: 'decrease'),
+                      );
+                    },
                     child: Container(
                       width: 30,
                       height: 30,
@@ -88,7 +95,14 @@ class CartItemWidget extends StatelessWidget {
 
                   InkWell(
                     borderRadius: BorderRadius.circular(8),
-                    onTap: () {},
+                    onTap: () {
+                      if (item?.id == null) {
+                        return;
+                      }
+                      context.read<PosBloc>().add(
+                        ChangeQuantityCart(cart_id: item.id!, type: 'increase'),
+                      );
+                    },
                     child: Container(
                       width: 30,
                       height: 30,

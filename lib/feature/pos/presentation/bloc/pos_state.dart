@@ -1,5 +1,9 @@
 part of 'pos_bloc.dart';
 
+enum PaymentMethod { cash, qris }
+
+enum PosStatus { initial, loading, success, error }
+
 @immutable
 class PosState {
   final List<ProductModels> products_data;
@@ -16,6 +20,10 @@ class PosState {
 
   final int totalItem;
 
+  final PaymentMethod method;
+
+  final PosStatus status;
+
   const PosState({
     this.products_data = const [],
     this.category_data = const [],
@@ -24,6 +32,8 @@ class PosState {
     this.currentIndex = 0,
     this.total = 0,
     this.totalItem = 0,
+    this.method = PaymentMethod.cash,
+    this.status = PosStatus.initial,
   });
 
   PosState copyWith({
@@ -34,6 +44,8 @@ class PosState {
     int? currentIndex,
     double? total,
     int? totalItem,
+    PaymentMethod? method,
+    PosStatus? status,
   }) {
     return PosState(
       products_data: products_data ?? this.products_data,
@@ -43,6 +55,8 @@ class PosState {
       currentIndex: currentIndex ?? 0,
       total: total ?? this.total,
       totalItem: totalItem ?? this.totalItem,
+      method: method ?? this.method,
+      status: status ?? this.status,
     );
   }
 }

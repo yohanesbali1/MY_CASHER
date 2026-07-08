@@ -27,3 +27,28 @@ class RemoveProductFromCart extends PosEvent {
   final int cart_id;
   const RemoveProductFromCart({required this.cart_id});
 }
+
+class ChangeQuantityCart extends PosEvent {
+  final int cart_id;
+  final String type;
+  const ChangeQuantityCart({required this.cart_id, required this.type});
+}
+
+class SyncCart extends PosEvent {
+  final int cartId;
+  const SyncCart(this.cartId);
+}
+
+class ChangeMethod extends PosEvent {
+  final PaymentMethod method;
+  const ChangeMethod({required this.method});
+}
+
+class SubmitPayment extends PosEvent {
+  final double cash;
+  const SubmitPayment({required this.cash});
+}
+
+class ResetPos extends PosEvent {
+  const ResetPos();
+}

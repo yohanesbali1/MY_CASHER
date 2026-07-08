@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -37,11 +37,30 @@ class PosBloc extends Bloc<PosEvent, PosState> {
       if (event is RemoveProductFromCart) {
         await _onRemoveCart(event, emit);
       }
+      if (event is ChangeQuantityCart) {
+        await _onChangeQuantity(event, emit);
+      }
+      if (event is ChangeMethod) {
+        await _onChangeMethod(event, emit);
+      }
+      if (event is SubmitPayment) {
+        await _onSubmitPayment(event, emit);
+      }
     });
+
+    on<SyncCart>(_onSyncCart);
   }
   final ProductRepository _repository;
   final CategoryProductRepository _categoryRepository;
   final CartRepository _cartRepository;
+
+  Timer? _syncCartTimer;
+
+  @override
+  Future<void> close() {
+    _syncCartTimer?.cancel();
+    return super.close();
+  }
 
   Future<void> _onChangeTab(PosTabChanged event, Emitter<PosState> emit) async {
     emit(state.copyWith(currentIndex: event.index));
@@ -61,7 +80,6 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     final data = await _repository.getData();
     final data_category = await _categoryRepository.getData();
     await _cartRepository.clear();
-
     emit(state.copyWith(products_data: data, category_data: data_category));
   }
 
@@ -104,5 +122,83 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     } finally {
       emit(state.copyWith(isLoading: false));
     }
+  }
+
+  Future<void> _onChangeQuantity(
+    ChangeQuantityCart event,
+    Emitter<PosState> emit,
+  ) async {
+    try {
+      final carts = [...state.cartItems];
+
+      final index = carts.indexWhere((e) => e.id == event.cart_id);
+
+      if (index == -1) return;
+
+      final item = carts[index];
+
+      int qty = item.quantity;
+
+      switch (event.type) {
+        case 'increase':
+          qty++;
+          break;
+
+        case 'decrease':
+          if (qty > 1) {
+            qty--;
+          }
+          break;
+      }
+
+      carts[index] = item.copyWith(quantity: qty, subtotal: qty * item.price);
+
+      emit(state.copyWith(cartItems: carts));
+
+      _syncCartTimer?.cancel();
+
+      _syncCartTimer = Timer(const Duration(milliseconds: 500), () {
+        add(SyncCart(event.cart_id));
+      });
+    } catch (e) {
+      rethrow;
+    } finally {
+      emit(state.copyWith(isLoading: false));
+    }
+  }
+
+  Future<void> _onSyncCart(SyncCart event, Emitter<PosState> emit) async {
+    final item = state.cartItems.firstWhere((e) => e.id == event.cartId);
+
+    await _cartRepository.updateQuantity(item.id!, item.quantity, item.price);
+
+    await _onGetCart(CartStarted(), emit);
+  }
+
+  Future<void> _onChangeMethod(
+    ChangeMethod event,
+    Emitter<PosState> emit,
+  ) async {
+    emit(state.copyWith(method: event.method));
+  }
+
+  Future<void> _onSubmitPayment(
+    SubmitPayment event,
+    Emitter<PosState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(isLoading: true));
+      await Future.delayed(const Duration(seconds: 1));
+      await _onResetPos(ResetPos(), emit);
+      emit(state.copyWith(isLoading: false, status: PosStatus.success));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, status: PosStatus.error));
+    }
+  }
+
+  Future<void> _onResetPos(ResetPos event, Emitter<PosState> emit) async {
+    emit(state.copyWith(status: PosStatus.initial));
+    await _cartRepository.clear();
+    await _onGetCart(CartStarted(), emit);
   }
 }

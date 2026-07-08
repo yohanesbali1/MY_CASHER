@@ -1,51 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:my_casher/feature/pos/presentation/bloc/pos_bloc.dart';
+import 'package:my_casher/feature/pos/presentation/widget/payment/payment_panel_widget.dart';
 
-class MenuInventory extends StatelessWidget {
-  final int currentIndex;
-  final ValueChanged<int> onChanged;
+// import 'payment_panel_widget.dart';
 
-  const MenuInventory({
+class PaymentMethodWidget extends StatelessWidget {
+  const PaymentMethodWidget({
     super.key,
-    required this.currentIndex,
+    required this.method,
     required this.onChanged,
   });
 
+  final PaymentMethod method;
+
+  final ValueChanged<PaymentMethod> onChanged;
+
   static const items = [
-    (icon: Icons.inventory_2_outlined, label: 'Produk'),
-    // (icon: Icons.bar_chart_outlined, label: 'Statistik'),
-    (icon: Icons.sell_outlined, label: 'Kategori'),
+    (icon: Icons.payments, label: 'Tunai', value: PaymentMethod.cash),
+    (icon: Icons.qr_code, label: 'Qr', value: PaymentMethod.qris),
   ];
 
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
-
     return Container(
-      padding: EdgeInsets.all(20),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final itemWidth = constraints.maxWidth / items.length;
-
+          final itemWidth = (constraints.maxWidth - 8) / items.length;
+          final index = items.indexWhere((e) => e.value == method);
           return Container(
             height: 48,
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: color.secondary,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Stack(
               children: [
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 250),
                   curve: Curves.easeInOut,
-                  left: currentIndex * itemWidth,
+                  left: index * itemWidth,
                   top: 4,
                   bottom: 4,
                   child: Container(
                     width: itemWidth,
                     decoration: BoxDecoration(
                       color: color.surface,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: .06),
@@ -61,12 +64,12 @@ class MenuInventory extends StatelessWidget {
                 Row(
                   children: List.generate(items.length, (index) {
                     final item = items[index];
-                    final selected = index == currentIndex;
+                    final selected = method == item.value;
 
                     return Expanded(
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        onTap: () => onChanged(index),
+                        onTap: () => onChanged(item.value),
                         child: SizedBox(
                           height: 48,
                           child: Row(

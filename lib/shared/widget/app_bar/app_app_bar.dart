@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_casher/shared/extentions/datetime_extention.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,7 +20,13 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showBackButton
           ? Center(
               child: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go('/pos');
+                  }
+                },
                 icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),
                 padding: EdgeInsets.zero,
                 alignment: Alignment.center,

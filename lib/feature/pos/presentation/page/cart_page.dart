@@ -33,6 +33,7 @@ class CartPage extends StatelessWidget {
                     cart: state.cartItems,
                     total: state.total,
                     totalItem: state.totalItem,
+                    method: state.method,
                   ),
               ],
             ),

@@ -46,14 +46,14 @@ Future<void> configureDependencies() async {
     () => CategoryProductBloc(sl<CategoryProductRepository>()),
   );
 
-  sl.registerLazySingleton<IventoryBloc>(
+  sl.registerFactory<IventoryBloc>(
     () => IventoryBloc(
       categoryBloc: sl<CategoryProductBloc>(),
       productBloc: sl<ProductBloc>(),
     ),
   );
 
-  sl.registerLazySingleton<HomeBloc>(
+  sl.registerFactory<HomeBloc>(
     () => HomeBloc(iventoryBloc: sl<IventoryBloc>()),
   );
 
