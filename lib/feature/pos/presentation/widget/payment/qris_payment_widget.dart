@@ -7,7 +7,6 @@ class QrisPaymentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
     return SizedBox(
       width: double.infinity,

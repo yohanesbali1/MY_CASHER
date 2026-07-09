@@ -24,7 +24,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                   if (context.canPop()) {
                     context.pop();
                   } else {
-                    context.go('/pos');
+                    context.go('/home');
                   }
                 },
                 icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 14),

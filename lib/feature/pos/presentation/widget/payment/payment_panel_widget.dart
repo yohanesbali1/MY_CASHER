@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_casher/feature/pos/data/models/cart_item_model.dart';
 import 'package:my_casher/feature/pos/presentation/bloc/pos_bloc.dart';
 import 'package:my_casher/feature/pos/presentation/widget/payment/cash_payment_widget.dart';
@@ -7,9 +8,6 @@ import 'package:my_casher/feature/pos/presentation/widget/payment/payment_method
 import 'package:my_casher/feature/pos/presentation/widget/payment/qris_payment_widget.dart';
 
 import 'payment_summary_widget.dart';
-// import 'payment_method_widget.dart';
-// import 'cash_payment_widget.dart';
-// import 'qris_payment_widget.dart';
 
 class PaymentPanelWidget extends StatelessWidget {
   const PaymentPanelWidget({
@@ -18,10 +16,6 @@ class PaymentPanelWidget extends StatelessWidget {
     required this.total,
     required this.totalItem,
     required this.method,
-    // required this.cashController,
-    // required this.onMethodChanged,
-    // required this.onPayCash,
-    // required this.onShowQris,
   });
 
   final List<CartItemModel> cart;
@@ -29,14 +23,6 @@ class PaymentPanelWidget extends StatelessWidget {
   final int totalItem;
 
   final PaymentMethod method;
-
-  // final TextEditingController cashController;
-
-  // final ValueChanged<PaymentMethod> onMethodChanged;
-
-  // final VoidCallback onPayCash;
-
-  // final VoidCallback onShowQris;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +54,18 @@ class PaymentPanelWidget extends StatelessWidget {
               if (method == PaymentMethod.cash)
                 CashPaymentWidget(total: total)
               else
-                QrisPaymentWidget(onPressed: () {}),
+                QrisPaymentWidget(
+                  onPressed: () {
+                    context.go(
+                      '/pos/qris',
+                      extra: {
+                        'cart': state.cartItems,
+                        'total': state.total,
+                        'totalItem': state.totalItem,
+                      },
+                    );
+                  },
+                ),
             ],
           ),
         );

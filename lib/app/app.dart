@@ -14,6 +14,9 @@ class App extends StatelessWidget {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (context, state) {
         return MaterialApp.router(
+          scrollBehavior: const MaterialScrollBehavior().copyWith(
+            overscroll: false,
+          ),
           debugShowCheckedModeBanner: false,
           themeMode: state.themeMode,
           theme: lightTheme,

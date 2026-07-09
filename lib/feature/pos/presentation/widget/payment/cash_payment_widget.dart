@@ -47,7 +47,7 @@ class _CashPaymentWidgetState extends State<CashPaymentWidget> {
         if (state.status == PosStatus.success) {
           _priceController.clear();
           context.go(
-            '/payment-success',
+            '/pos/payment-success',
             extra: {'isCash': true, 'change': change},
           );
         }

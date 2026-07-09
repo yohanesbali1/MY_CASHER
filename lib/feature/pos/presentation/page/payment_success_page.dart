@@ -110,7 +110,7 @@ class PaymentSuccessPage extends StatelessWidget {
                   minimumSize: const Size.fromHeight(52),
                 ),
                 onPressed: () {
-                  context.go('/pos');
+                  context.go('/home');
                 },
                 icon: const Icon(
                   Icons.point_of_sale_rounded,
