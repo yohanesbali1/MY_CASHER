@@ -57,6 +57,7 @@ class ProductGridWidget extends StatelessWidget {
         return InkWell(
           borderRadius: BorderRadius.circular(18),
           onTap: outOfStock ? null : () => onTap(product),
+          splashColor: Colors.transparent,
           child: Opacity(
             opacity: outOfStock ? .45 : 1,
             child: Stack(
@@ -73,7 +74,7 @@ class ProductGridWidget extends StatelessWidget {
                       color: inCart
                           ? color.primary
                           : Theme.of(context).dividerColor,
-                      width: inCart ? 2 : 1,
+                      width: 1,
                     ),
                   ),
                   child: Column(

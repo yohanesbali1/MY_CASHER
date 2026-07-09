@@ -5,9 +5,9 @@ class AppTextTheme {
   AppTextTheme._();
 
   static TextTheme textTheme(Color textColor) {
-    return GoogleFonts.notoSansTextTheme().copyWith(
+    return TextTheme(
       // h1
-      displayLarge: GoogleFonts.notoSans(
+      displayLarge: GoogleFonts.montserrat(
         fontSize: 32,
         fontWeight: FontWeight.w500,
         height: 1.5,
@@ -15,7 +15,7 @@ class AppTextTheme {
       ),
 
       // h2
-      displayMedium: GoogleFonts.notoSans(
+      displayMedium: GoogleFonts.montserrat(
         fontSize: 28,
         fontWeight: FontWeight.w500,
         height: 1.5,
@@ -23,7 +23,7 @@ class AppTextTheme {
       ),
 
       // h3
-      headlineLarge: GoogleFonts.notoSans(
+      headlineLarge: GoogleFonts.montserrat(
         fontSize: 24,
         fontWeight: FontWeight.w500,
         height: 1.5,
@@ -31,7 +31,7 @@ class AppTextTheme {
       ),
 
       // h4
-      titleLarge: GoogleFonts.notoSans(
+      titleLarge: GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.w500,
         height: 1.5,
@@ -39,14 +39,14 @@ class AppTextTheme {
       ),
 
       // p
-      bodyLarge: GoogleFonts.notoSans(
+      bodyLarge: GoogleFonts.montserrat(
         fontSize: 15,
         fontWeight: FontWeight.w400,
         height: 1.5,
         color: textColor,
       ),
 
-      bodyMedium: GoogleFonts.notoSans(
+      bodyMedium: GoogleFonts.montserrat(
         fontSize: 15,
         fontWeight: FontWeight.w400,
         height: 1.5,
@@ -54,21 +54,21 @@ class AppTextTheme {
       ),
 
       // label & button
-      labelLarge: GoogleFonts.notoSans(
+      labelLarge: GoogleFonts.montserrat(
         fontSize: 16,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      labelMedium: GoogleFonts.notoSans(
+      labelMedium: GoogleFonts.montserrat(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      labelSmall: GoogleFonts.notoSans(
+      labelSmall: GoogleFonts.montserrat(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         height: 1.5,

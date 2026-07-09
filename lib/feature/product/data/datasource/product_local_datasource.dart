@@ -4,8 +4,22 @@ import 'package:my_casher/core/database/tables/product_table.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
 
 class ProductLocalDatasource {
-  Future<List<ProductModels>> getData() async {
+  Future<List<ProductModels>> getData({int? categoryId, String? search}) async {
     final db = await AppDatabase.instance.database;
+
+    final where = <String>[];
+    final args = <dynamic>[];
+
+    if (categoryId != null) {
+      where.add('p.${ProductTable.categoryId} = ?');
+      args.add(categoryId);
+    }
+
+    if (search != null && search.trim().isNotEmpty) {
+      print(search);
+      where.add('p.${ProductTable.name} LIKE ?');
+      args.add('%$search%');
+    }
 
     final result = await db.rawQuery('''
     SELECT
@@ -14,8 +28,9 @@ class ProductLocalDatasource {
     FROM ${ProductTable.table} p
     LEFT JOIN ${CategoryTable.table} c
       ON p.${ProductTable.categoryId} = c.${CategoryTable.id}
+    ${where.isNotEmpty ? 'WHERE ${where.join(' AND ')}' : ''}
     ORDER BY p.${ProductTable.id} DESC
-  ''');
+    ''', args);
 
     return result.map((e) => ProductModels.fromMap(e)).toList();
   }

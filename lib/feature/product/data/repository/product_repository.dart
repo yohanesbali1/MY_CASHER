@@ -6,8 +6,8 @@ class ProductRepository {
 
   ProductRepository(this.datasource);
 
-  Future<List<ProductModels>> getData() {
-    return datasource.getData();
+  Future<List<ProductModels>> getData({int? category_id, String? search}) {
+    return datasource.getData(categoryId: category_id, search: search);
   }
 
   Future<void> create(ProductModels product) {

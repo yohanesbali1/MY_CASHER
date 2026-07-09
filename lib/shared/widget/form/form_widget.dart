@@ -72,16 +72,17 @@ class AppTextField extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
 
-        isDense: true,
+        fillColor: color.secondary,
 
         filled: true,
-        fillColor: color.secondary,
 
         hintStyle: text.bodyMedium?.copyWith(
           color: color.onSecondary.withValues(alpha: .7),
           fontSize: 14,
-          fontWeight: FontWeight.w400,
+          fontWeight: FontWeight.w500,
         ),
+
+        prefixIconConstraints: const BoxConstraints(minWidth: 0),
 
         contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 10),
 

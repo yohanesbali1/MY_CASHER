@@ -57,19 +57,27 @@ class _CashPaymentWidgetState extends State<CashPaymentWidget> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppTextField(
-              controller: _priceController,
-              keyboardType: TextInputType.number,
-              hintText: 'Masukkan nominal uang',
-              prefixIcon: Icon(
-                Icons.monetization_on_outlined,
-                color: Colors.black.withValues(alpha: .5),
+            SizedBox(
+              height: 40,
+
+              child: AppTextField(
+                controller: _priceController,
+                keyboardType: TextInputType.number,
+                hintText: 'Jumlah uang tunai...',
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 2),
+                  child: Icon(
+                    Icons.sell_outlined,
+                    color: Colors.black.withValues(alpha: .5),
+                    size: 20,
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _cash = double.tryParse(value) ?? 0;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  _cash = double.tryParse(value) ?? 0;
-                });
-              },
             ),
 
             const SizedBox(height: 12),
@@ -99,12 +107,11 @@ class _CashPaymentWidgetState extends State<CashPaymentWidget> {
                 children: [
                   const Icon(Icons.check, color: Colors.green, size: 18),
                   const SizedBox(width: 8),
-                  Text(
-                    "Kembalian ${CurrencyHelper.rupiah(change)}",
-                    style: text.bodySmall?.copyWith(
-                      color: Colors.green,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 13,
+                  Flexible(
+                    child: Text(
+                      "Kembalian ${CurrencyHelper.rupiah(change)}",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],

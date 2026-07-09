@@ -27,6 +27,22 @@ class PosBloc extends Bloc<PosEvent, PosState> {
         await _onGetData(event, emit);
       }
 
+      if (event is GetProducts) {
+        await _onGetProducts(event, emit);
+      }
+
+      if (event is GetCategories) {
+        await _onGetCategories(event, emit);
+      }
+
+      if (event is SelectCategory) {
+        await _onChangeCategory(event, emit);
+      }
+
+      if (event is SearchProduct) {
+        await _onSearchProduct(event, emit);
+      }
+
       if (event is CartStarted) {
         await _onGetCart(event, emit);
       }
@@ -54,11 +70,11 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   final CategoryProductRepository _categoryRepository;
   final CartRepository _cartRepository;
 
-  Timer? _syncCartTimer;
+  Timer? _searchDebounce;
 
   @override
   Future<void> close() {
-    _syncCartTimer?.cancel();
+    _searchDebounce?.cancel();
     return super.close();
   }
 
@@ -76,21 +92,60 @@ class PosBloc extends Bloc<PosEvent, PosState> {
 
   Future<void> _onGetData(PosStarted event, Emitter<PosState> emit) async {
     emit(state.copyWith(isLoading: true));
-    await Future.delayed(const Duration(seconds: 1));
-    final data = await _repository.getData();
-    final data_category = await _categoryRepository.getData();
-    await _cartRepository.clear();
-    emit(state.copyWith(products_data: data, category_data: data_category));
+    await _onGetProducts(GetProducts(), emit);
+    await _onGetCategories(GetCategories(), emit);
+    await Future.delayed(const Duration(seconds: 10));
+    emit(state.copyWith(isLoading: false));
+  }
+
+  Future<void> _onGetCategories(
+    GetCategories event,
+    Emitter<PosState> emit,
+  ) async {
+    final data = await _categoryRepository.getData();
+    emit(state.copyWith(category_data: data));
+  }
+
+  Future<void> _onGetProducts(GetProducts event, Emitter<PosState> emit) async {
+    final data = await _repository.getData(
+      category_id: event.category_id,
+      search: event.search,
+    );
+    emit(state.copyWith(products_data: data));
   }
 
   Future<void> _onGetCart(CartStarted event, Emitter<PosState> emit) async {
     emit(state.copyWith(isLoading: true));
-    await Future.delayed(const Duration(seconds: 1));
     final cart = await _cartRepository.getData();
 
     final total = cart.fold<double>(0, (s, e) => s + e.subtotal);
     final totalItem = cart.fold<int>(0, (s, e) => s + e.quantity);
     emit(state.copyWith(cartItems: cart, total: total, totalItem: totalItem));
+  }
+
+  Future<void> _onChangeCategory(
+    SelectCategory event,
+    Emitter<PosState> emit,
+  ) async {
+    emit(state.copyWith(selectedCategory: event.category_id));
+    await _onGetProducts(
+      GetProducts(category_id: event.category_id, search: state.searchProduct),
+      emit,
+    );
+  }
+
+  Future<void> _onSearchProduct(
+    SearchProduct event,
+    Emitter<PosState> emit,
+  ) async {
+    emit(state.copyWith(searchProduct: event.search));
+    _searchDebounce?.cancel();
+
+    _searchDebounce = Timer(const Duration(milliseconds: 400), () {
+      add(
+        GetProducts(category_id: state.selectedCategory, search: event.search),
+      );
+    });
   }
 
   Future<void> _onAddCart(
@@ -114,7 +169,6 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
-      await Future.delayed(const Duration(seconds: 1));
       await _cartRepository.delete(event.cart_id);
       await _onGetCart(CartStarted(), emit);
     } catch (e) {
@@ -155,9 +209,9 @@ class PosBloc extends Bloc<PosEvent, PosState> {
 
       emit(state.copyWith(cartItems: carts));
 
-      _syncCartTimer?.cancel();
+      _searchDebounce?.cancel();
 
-      _syncCartTimer = Timer(const Duration(milliseconds: 500), () {
+      _searchDebounce = Timer(const Duration(milliseconds: 500), () {
         add(SyncCart(event.cart_id));
       });
     } catch (e) {
@@ -188,7 +242,6 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
-      await Future.delayed(const Duration(seconds: 1));
       await _onResetPos(ResetPos(), emit);
       emit(state.copyWith(isLoading: false, status: PosStatus.success));
     } catch (e) {

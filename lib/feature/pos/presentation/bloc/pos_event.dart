@@ -14,6 +14,26 @@ class PosTabChanged extends PosEvent {
   const PosTabChanged({required this.index});
 }
 
+class GetProducts extends PosEvent {
+  final int? category_id;
+  final String? search;
+  const GetProducts({this.category_id, this.search});
+}
+
+class SelectCategory extends PosEvent {
+  final int? category_id;
+  const SelectCategory({required this.category_id});
+}
+
+class SearchProduct extends PosEvent {
+  final String search;
+  const SearchProduct({required this.search});
+}
+
+class GetCategories extends PosEvent {
+  const GetCategories();
+}
+
 class CartStarted extends PosEvent {
   const CartStarted();
 }

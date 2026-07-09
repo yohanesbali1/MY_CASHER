@@ -24,6 +24,10 @@ class PosState {
 
   final PosStatus status;
 
+  final int? selectedCategory;
+
+  final String? searchProduct;
+
   const PosState({
     this.products_data = const [],
     this.category_data = const [],
@@ -34,6 +38,8 @@ class PosState {
     this.totalItem = 0,
     this.method = PaymentMethod.cash,
     this.status = PosStatus.initial,
+    this.selectedCategory = null,
+    this.searchProduct = null,
   });
 
   PosState copyWith({
@@ -46,6 +52,8 @@ class PosState {
     int? totalItem,
     PaymentMethod? method,
     PosStatus? status,
+    Object? selectedCategory = _unset,
+    Object? searchProduct = _unset,
   }) {
     return PosState(
       products_data: products_data ?? this.products_data,
@@ -57,6 +65,12 @@ class PosState {
       totalItem: totalItem ?? this.totalItem,
       method: method ?? this.method,
       status: status ?? this.status,
+      selectedCategory: identical(selectedCategory, _unset)
+          ? this.selectedCategory
+          : selectedCategory as int?,
+      searchProduct: identical(searchProduct, _unset)
+          ? this.searchProduct
+          : searchProduct as String?,
     );
   }
 }
