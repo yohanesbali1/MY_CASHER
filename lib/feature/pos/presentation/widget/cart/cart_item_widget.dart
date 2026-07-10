@@ -28,8 +28,8 @@ class CartItemWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                  width: 52,
-                  height: 52,
+                  width: 42,
+                  height: 42,
                   color: Theme.of(context).colorScheme.secondary,
                   child: Center(child: Text(item.product.icon ?? '')),
                 ),

@@ -17,7 +17,7 @@ class PaymentMethodWidget extends StatelessWidget {
 
   static const items = [
     (icon: Icons.payments, label: 'Tunai', value: PaymentMethod.cash),
-    (icon: Icons.qr_code, label: 'Qr', value: PaymentMethod.qris),
+    (icon: Icons.qr_code, label: 'QRIS', value: PaymentMethod.qris),
   ];
 
   @override

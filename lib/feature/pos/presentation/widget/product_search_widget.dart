@@ -55,6 +55,7 @@ class _ProductSearchWidgetState extends State<ProductSearchWidget> {
           child: Icon(
             Icons.search_rounded,
             color: Colors.black.withValues(alpha: .5),
+            size: 20,
           ),
         ),
         onChanged: (value) {

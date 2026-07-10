@@ -21,7 +21,7 @@ class QrisAmountWidget extends StatelessWidget {
         Text(
           'TOTAL PEMBAYARAN',
           style: text.labelSmall?.copyWith(
-            color: color.onSurfaceVariant,
+            color: color.onSurfaceVariant.withValues(alpha: .5),
             letterSpacing: 1.2,
             fontWeight: FontWeight.w600,
           ),
@@ -49,6 +49,7 @@ class QrisAmountWidget extends StatelessWidget {
             '$totalItem Item',
             style: text.labelMedium?.copyWith(
               color: color.primary,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),

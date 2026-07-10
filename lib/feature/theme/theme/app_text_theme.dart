@@ -1,74 +1,82 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppTextTheme {
   AppTextTheme._();
 
   static TextTheme textTheme(Color textColor) {
     return TextTheme(
-      // h1
-      displayLarge: GoogleFonts.montserrat(
+      // H1
+      displayLarge: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 32,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      // h2
-      displayMedium: GoogleFonts.montserrat(
+      // H2
+      displayMedium: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 28,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      // h3
-      headlineLarge: GoogleFonts.montserrat(
+      // H3
+      headlineLarge: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 24,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      // h4
-      titleLarge: GoogleFonts.montserrat(
+      // H4
+      titleLarge: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 16,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      // p
-      bodyLarge: GoogleFonts.montserrat(
+      // Body
+      bodyLarge: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 15,
         fontWeight: FontWeight.w400,
         height: 1.5,
         color: textColor,
       ),
 
-      bodyMedium: GoogleFonts.montserrat(
+      bodyMedium: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 15,
         fontWeight: FontWeight.w400,
         height: 1.5,
         color: textColor,
       ),
 
-      // label & button
-      labelLarge: GoogleFonts.montserrat(
+      // Label & Button
+      labelLarge: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 16,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      labelMedium: GoogleFonts.montserrat(
+      labelMedium: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 14,
         fontWeight: FontWeight.w500,
         height: 1.5,
         color: textColor,
       ),
 
-      labelSmall: GoogleFonts.montserrat(
+      labelSmall: TextStyle(
+        fontFamily: 'Montserrat',
         fontSize: 12,
         fontWeight: FontWeight.w500,
         height: 1.5,

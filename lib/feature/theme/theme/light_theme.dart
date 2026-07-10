@@ -34,5 +34,7 @@ final lightTheme = ThemeData(
     centerTitle: true,
   ),
 
+  fontFamily: 'Montserrat',
+
   textTheme: AppTextTheme.textTheme(const Color(0xFF111827)),
 );

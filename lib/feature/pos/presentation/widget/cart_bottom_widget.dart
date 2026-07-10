@@ -68,7 +68,7 @@ class CartBottomWidget extends StatelessWidget {
               Text(
                 "Lihat Keranjang",
                 style: text.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w700,
                   color: Colors.white,
                 ),
               ),

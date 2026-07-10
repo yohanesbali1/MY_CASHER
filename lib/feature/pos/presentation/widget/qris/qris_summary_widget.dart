@@ -37,9 +37,14 @@ class QrisSummaryWidget extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Text(
-                      item.product.icon ?? "📦",
-                      style: const TextStyle(fontSize: 24),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: 42,
+                        height: 42,
+                        color: Theme.of(context).colorScheme.secondary,
+                        child: Center(child: Text(item.product.icon ?? '')),
+                      ),
                     ),
 
                     const SizedBox(width: 12),

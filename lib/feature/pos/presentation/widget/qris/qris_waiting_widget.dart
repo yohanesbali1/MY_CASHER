@@ -23,7 +23,7 @@ class QrisWaitingWidget extends StatelessWidget {
                 width: 10,
                 height: 10,
                 decoration: BoxDecoration(
-                  color: color.primary,
+                  color: color.primary.withValues(alpha: .5),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -36,8 +36,8 @@ class QrisWaitingWidget extends StatelessWidget {
 
         Text(
           'Menunggu konfirmasi pembayaran...',
-          style: text.bodyMedium?.copyWith(
-            color: color.onSurfaceVariant,
+          style: text.labelSmall?.copyWith(
+            color: color.onSurfaceVariant.withValues(alpha: .5),
             fontWeight: FontWeight.w500,
           ),
         ),

@@ -34,5 +34,8 @@ final darkTheme = ThemeData(
     elevation: 0,
     centerTitle: true,
   ),
+
+  fontFamily: 'Montserrat',
+
   textTheme: AppTextTheme.textTheme(const Color(0xFFF0F0F0)),
 );
