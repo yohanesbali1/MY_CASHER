@@ -12,6 +12,7 @@ class HomeBottomNavigation extends StatelessWidget {
 
   static const _items = [
     (Icons.shopping_cart_outlined, 'Kasir'),
+    (Icons.receipt_long_outlined, 'Transaksi'),
     (Icons.inventory_2_outlined, 'Stok'),
   ];
 

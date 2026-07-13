@@ -66,7 +66,8 @@ class ChangeMethod extends PosEvent {
 
 class SubmitPayment extends PosEvent {
   final double cash;
-  const SubmitPayment({required this.cash});
+  final double change;
+  const SubmitPayment({required this.cash, required this.change});
 }
 
 class ResetPos extends PosEvent {

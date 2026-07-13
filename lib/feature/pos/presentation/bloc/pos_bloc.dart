@@ -6,6 +6,7 @@ import 'package:my_casher/feature/category_product/data/models/category_product_
 import 'package:my_casher/feature/category_product/data/repository/category_product_repository.dart';
 import 'package:my_casher/feature/pos/data/models/cart_item_model.dart';
 import 'package:my_casher/feature/pos/data/repository/cart_repository.dart';
+import 'package:my_casher/feature/pos/data/repository/transaction_repository.dart';
 import 'package:my_casher/feature/product/data/models/product_models.dart';
 import 'package:my_casher/feature/product/data/repository/product_repository.dart';
 
@@ -17,6 +18,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
     required this._repository,
     required this._categoryRepository,
     required this._cartRepository,
+    required this._transactionRepository,
   }) : super(PosState()) {
     on<PosEvent>((event, emit) async {
       if (event is PosTabChanged) {
@@ -69,6 +71,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   final ProductRepository _repository;
   final CategoryProductRepository _categoryRepository;
   final CartRepository _cartRepository;
+  final TransactionRepository _transactionRepository;
 
   Timer? _searchDebounce;
 
@@ -242,6 +245,12 @@ class PosBloc extends Bloc<PosEvent, PosState> {
   ) async {
     try {
       emit(state.copyWith(isLoading: true));
+      await _transactionRepository.checkout(
+        total: state.total,
+        payment: event.cash,
+        change: event.change,
+        cartItems: state.cartItems,
+      );
       await _onResetPos(ResetPos(), emit);
       emit(state.copyWith(isLoading: false, status: PosStatus.success));
     } catch (e) {

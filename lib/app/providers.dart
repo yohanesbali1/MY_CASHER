@@ -5,6 +5,7 @@ import 'package:my_casher/feature/iventory/presentation/bloc/iventory_bloc.dart'
 import 'package:my_casher/feature/pos/presentation/bloc/pos_bloc.dart';
 import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 import 'package:my_casher/feature/theme/presentation/bloc/theme_bloc.dart';
+import 'package:my_casher/feature/transaction/persentation/bloc/transaction_bloc.dart';
 
 import '../core/di/injection.dart';
 
@@ -20,5 +21,8 @@ class AppProviders {
     BlocProvider<IventoryBloc>(create: (_) => sl<IventoryBloc>()),
     BlocProvider<CategoryProductBloc>(create: (_) => sl<CategoryProductBloc>()),
     BlocProvider<ProductBloc>(create: (_) => sl<ProductBloc>()),
+    BlocProvider<TransactionBloc>(
+      create: (_) => sl<TransactionBloc>()..add(GetTransactionEvent()),
+    ),
   ];
 }

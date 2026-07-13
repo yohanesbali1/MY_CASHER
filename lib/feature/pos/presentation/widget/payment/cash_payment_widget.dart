@@ -134,7 +134,7 @@ class _CashPaymentWidgetState extends State<CashPaymentWidget> {
                             danger: false,
                             onConfirm: () async {
                               context.read<PosBloc>().add(
-                                SubmitPayment(cash: _cash),
+                                SubmitPayment(cash: _cash, change: change),
                               );
                             },
                           ),

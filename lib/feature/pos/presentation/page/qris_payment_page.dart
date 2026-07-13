@@ -99,7 +99,9 @@ class QrisPaymentPage extends StatelessWidget {
                         'Pastikan pembayaran QRIS sebesar ${CurrencyHelper.rupiah(total)} sudah diterima sebelum melanjutkan.?',
                     danger: false,
                     onConfirm: () async {
-                      context.read<PosBloc>().add(SubmitPayment(cash: total));
+                      context.read<PosBloc>().add(
+                        SubmitPayment(cash: total, change: 0.0),
+                      );
                     },
                   );
                 },

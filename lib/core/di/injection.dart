@@ -5,12 +5,15 @@ import 'package:my_casher/feature/category_product/presentation/bloc/category_pr
 import 'package:my_casher/feature/home/presentation/bloc/home_bloc.dart';
 import 'package:my_casher/feature/iventory/presentation/bloc/iventory_bloc.dart';
 import 'package:my_casher/feature/pos/data/datasource/cart_local_datasource.dart';
+import 'package:my_casher/feature/pos/data/datasource/transaction_local_datasource.dart';
 import 'package:my_casher/feature/pos/data/repository/cart_repository.dart';
+import 'package:my_casher/feature/pos/data/repository/transaction_repository.dart';
 import 'package:my_casher/feature/pos/presentation/bloc/pos_bloc.dart';
 import 'package:my_casher/feature/product/data/datasource/product_local_datasource.dart';
 import 'package:my_casher/feature/product/data/repository/product_repository.dart';
 import 'package:my_casher/feature/product/presentation/bloc/product_bloc.dart';
 import 'package:my_casher/feature/theme/presentation/bloc/theme_bloc.dart';
+import 'package:my_casher/feature/transaction/persentation/bloc/transaction_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -23,6 +26,10 @@ Future<void> configureDependencies() async {
 
   sl.registerLazySingleton<CategoryLocalDatasource>(
     () => CategoryLocalDatasource(),
+  );
+
+  sl.registerLazySingleton<TransactionLocalDatasource>(
+    () => TransactionLocalDatasource(),
   );
 
   sl.registerLazySingleton<CartLocalDatasource>(() => CartLocalDatasource());
@@ -54,7 +61,14 @@ Future<void> configureDependencies() async {
   );
 
   sl.registerFactory<HomeBloc>(
-    () => HomeBloc(iventoryBloc: sl<IventoryBloc>()),
+    () => HomeBloc(
+      iventoryBloc: sl<IventoryBloc>(),
+      transactionBloc: sl<TransactionBloc>(),
+    ),
+  );
+
+  sl.registerLazySingleton<TransactionRepository>(
+    () => TransactionRepository(sl<TransactionLocalDatasource>()),
   );
 
   sl.registerLazySingleton<PosBloc>(
@@ -62,6 +76,11 @@ Future<void> configureDependencies() async {
       repository: sl<ProductRepository>(),
       categoryRepository: sl<CategoryProductRepository>(),
       cartRepository: sl<CartRepository>(),
+      transactionRepository: sl<TransactionRepository>(),
     ),
+  );
+
+  sl.registerLazySingleton<TransactionBloc>(
+    () => TransactionBloc(sl<TransactionRepository>()),
   );
 }
