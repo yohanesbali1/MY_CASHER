@@ -7,6 +7,23 @@ class TransactionItemWidget extends StatelessWidget {
 
   final TransactionModel item;
 
+  String formatTransactionDate(DateTime date) {
+    final now = DateTime.now();
+
+    final isToday =
+        now.year == date.year && now.month == date.month && now.day == date.day;
+
+    if (isToday) {
+      return "${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}";
+    }
+
+    return "${date.day.toString().padLeft(2, '0')}-"
+        "${date.month.toString().padLeft(2, '0')}-"
+        "${date.year} "
+        "${date.hour.toString().padLeft(2, '0')}:"
+        "${date.minute.toString().padLeft(2, '0')}";
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
@@ -33,7 +50,7 @@ class TransactionItemWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "${item.createdAt.hour.toString().padLeft(2, '0')}:${item.createdAt.minute.toString().padLeft(2, '0')}",
+                  formatTransactionDate(item.createdAt),
                   style: text.bodySmall,
                 ),
               ],

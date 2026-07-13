@@ -23,8 +23,12 @@ class TransactionRepository {
     );
   }
 
-  Future<List<TransactionModel>> getData({page}) async {
-    final data = await _datasource.getData(page: page);
+  Future<List<TransactionModel>> getData({page, startDate, endDate}) async {
+    final data = await _datasource.getData(
+      page: page,
+      startDate: startDate,
+      endDate: endDate,
+    );
     return data;
   }
 
@@ -42,5 +46,17 @@ class TransactionRepository {
 
   Future<void> clear() async {
     await _datasource.clear();
+  }
+
+  Future<TransactionSummaryModel> getSummary({
+    String search = '',
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    return await _datasource.getSummary(
+      search: search,
+      startDate: startDate,
+      endDate: endDate,
+    );
   }
 }

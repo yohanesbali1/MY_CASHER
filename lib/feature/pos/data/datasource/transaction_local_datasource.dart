@@ -150,4 +150,51 @@ class TransactionLocalDatasource {
 
     return "INV-$date-${count.toString().padLeft(4, '0')}";
   }
+
+  Future<TransactionSummaryModel> getSummary({
+    String search = '',
+    DateTime? startDate,
+    DateTime? endDate,
+  }) async {
+    final db = await AppDatabase.instance.database;
+
+    final where = <String>[];
+    final args = <dynamic>[];
+
+    if (search.isNotEmpty) {
+      where.add('${TransactionTable.invoice} LIKE ?');
+      args.add('%$search%');
+    }
+
+    if (startDate != null) {
+      where.add('${TransactionTable.createdAt} >= ?');
+      args.add(startDate.toIso8601String());
+    }
+
+    if (endDate != null) {
+      where.add('${TransactionTable.createdAt} <= ?');
+      args.add(endDate.toIso8601String());
+    }
+
+    final whereSql = where.isEmpty ? '' : 'WHERE ${where.join(' AND ')}';
+
+    final result = await db.rawQuery('''
+    SELECT
+      COUNT(*) AS total_transaction,
+      COALESCE(SUM(${TransactionTable.total}),0) AS total_revenue,
+      COALESCE(SUM(td.${TransactionDetailTable.quantity}),0) AS total_item
+    FROM ${TransactionTable.table} t
+    LEFT JOIN ${TransactionDetailTable.table} td
+      ON td.${TransactionDetailTable.transactionId} = t.${TransactionTable.id}
+    $whereSql
+  ''', args);
+
+    final row = result.first;
+
+    return TransactionSummaryModel(
+      totalRevenue: (row['total_revenue'] as num).toDouble(),
+      totalTransaction: (row['total_transaction'] as num).toInt(),
+      totalItem: (row['total_item'] as num).toInt(),
+    );
+  }
 }

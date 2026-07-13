@@ -13,6 +13,10 @@ class TransactionState {
   final DateTime? startDate;
   final DateTime? endDate;
 
+  final double totalRevenue;
+  final int totalItem;
+  final int totalTransaction;
+
   static const _unset = Object();
 
   const TransactionState({
@@ -24,6 +28,9 @@ class TransactionState {
     this.search = '',
     this.startDate,
     this.endDate,
+    this.totalRevenue = 0,
+    this.totalItem = 0,
+    this.totalTransaction = 0,
   });
 
   TransactionState copyWith({
@@ -35,6 +42,9 @@ class TransactionState {
     Object? search = _unset,
     Object? startDate = _unset,
     Object? endDate = _unset,
+    double? totalRevenue,
+    int? totalItem,
+    int? totalTransaction,
   }) {
     return TransactionState(
       transactionData: data ?? transactionData,
@@ -45,6 +55,9 @@ class TransactionState {
       search: search == _unset ? this.search : (search as String? ?? ''),
       startDate: startDate == _unset ? this.startDate : startDate as DateTime?,
       endDate: endDate == _unset ? this.endDate : endDate as DateTime?,
+      totalRevenue: totalRevenue ?? this.totalRevenue,
+      totalItem: totalItem ?? this.totalItem,
+      totalTransaction: totalTransaction ?? this.totalTransaction,
     );
   }
 }

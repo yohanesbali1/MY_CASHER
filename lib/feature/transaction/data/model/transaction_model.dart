@@ -55,3 +55,15 @@ class TransactionModel {
     );
   }
 }
+
+class TransactionSummaryModel {
+  final double totalRevenue;
+  final int totalTransaction;
+  final int totalItem;
+
+  const TransactionSummaryModel({
+    required this.totalRevenue,
+    required this.totalTransaction,
+    required this.totalItem,
+  });
+}
