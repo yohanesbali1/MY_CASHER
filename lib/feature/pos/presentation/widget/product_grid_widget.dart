@@ -23,12 +23,18 @@ class ProductGridWidget extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     int crossAxisCount = width >= 600 ? 3 : 2;
     if (products.isEmpty) {
-      return Center(
-        child: EmptyStateWidget(
-          icon: Icons.inventory_2_outlined,
-          title: 'Produk Tidak Ditemukan',
-          description:
-              'Silahkan refresh halaman ini \nuntuk menampilkan produk.',
+      return SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: Center(
+            child: EmptyStateWidget(
+              icon: Icons.inventory_2_outlined,
+              title: 'Produk Tidak Ditemukan',
+              description:
+                  'Silahkan refresh halaman ini\nuntuk menampilkan produk.',
+            ),
+          ),
         ),
       );
     }

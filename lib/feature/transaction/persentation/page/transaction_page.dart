@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_casher/feature/transaction/persentation/bloc/transaction_bloc.dart';
 import 'package:my_casher/feature/transaction/persentation/widget/dashboard_summary_widget.dart';
+import 'package:my_casher/feature/transaction/persentation/widget/modal_detail_invoice_widget.dart';
 import 'package:my_casher/feature/transaction/persentation/widget/modal_filter_transaction_widget.dart';
 import 'package:my_casher/feature/transaction/persentation/widget/recent_transaction_base_widget.dart';
 import 'package:my_casher/feature/transaction/persentation/widget/transaction_filter_widget.dart';
@@ -45,19 +46,16 @@ class TransactionPage extends StatelessWidget {
                     from: state.startDate,
                     to: state.endDate,
                     onApply: (from, to) {
-                      // context.read<TransactionBloc>().add(
-                      //   FilterTransactionEvent(startDate: from, endDate: to),
-                      // );
+                      context.read<TransactionBloc>().add(
+                        FilterTransactionEvent(from, to, 1),
+                      );
                     },
                   );
                 },
                 onReset: () {
-                  // context.read<TransactionBloc>().add(
-                  //   const FilterTransactionEvent(
-                  //     startDate: null,
-                  //     endDate: null,
-                  //   ),
-                  // );
+                  context.read<TransactionBloc>().add(
+                    const FilterTransactionEvent(null, null, 1),
+                  );
                 },
               ),
 
@@ -77,6 +75,15 @@ class TransactionPage extends StatelessWidget {
                   hasReachedMax: state.hasReachedMax,
                   isLoading: state.isLoading,
                   isLoadingMore: state.isLoadingMore,
+                  onTap: (payload) {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) =>
+                          ModalDetailInvoiceWidget(invoice_detail: payload),
+                    );
+                  },
                 ),
               ),
             ],

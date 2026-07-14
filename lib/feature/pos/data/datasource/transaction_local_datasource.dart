@@ -11,6 +11,7 @@ class TransactionLocalDatasource {
     required double total,
     required double payment,
     required double change,
+    required String payment_method,
     required List<CartItemModel> cartItems,
   }) async {
     final db = await AppDatabase.instance.database;
@@ -21,13 +22,22 @@ class TransactionLocalDatasource {
         TransactionTable.total: total,
         TransactionTable.payment: payment,
         TransactionTable.change: change,
+        TransactionTable.paymentMethod: payment_method,
         TransactionTable.createdAt: DateTime.now().toIso8601String(),
       });
 
       for (final item in cartItems) {
+        final product = await txn.query(
+          ProductTable.table,
+          where: '${ProductTable.id} = ?',
+          whereArgs: [item.product.id],
+          limit: 1,
+        );
         await txn.insert(TransactionDetailTable.table, {
           TransactionDetailTable.transactionId: transactionId,
           TransactionDetailTable.productId: item.product.id,
+          TransactionDetailTable.productName: product.first[ProductTable.name],
+          TransactionDetailTable.productIcon: product.first[ProductTable.icon],
           TransactionDetailTable.quantity: item.quantity,
           TransactionDetailTable.price: item.price,
           TransactionDetailTable.subtotal: item.subtotal,
@@ -73,35 +83,32 @@ class TransactionLocalDatasource {
     return result.map(TransactionModel.fromMap).toList();
   }
 
-  Future<Map<String, dynamic>?> getById(int id) async {
+  Future<TransactionModel?> getById(int id) async {
     final db = await AppDatabase.instance.database;
 
-    final result = await db.query(
+    final transaction = await db.query(
       TransactionTable.table,
       where: '${TransactionTable.id} = ?',
       whereArgs: [id],
       limit: 1,
     );
 
-    return result.isEmpty ? null : result.first;
-  }
+    if (transaction.isEmpty) return null;
 
-  Future<List<Map<String, dynamic>>> getDetails(int transactionId) async {
-    final db = await AppDatabase.instance.database;
-
-    return db.rawQuery(
+    final details = await db.rawQuery(
       '''
-      SELECT
-        td.*,
-        p.*
-      FROM ${TransactionDetailTable.table} td
-      INNER JOIN ${ProductTable.table} p
-        ON td.${TransactionDetailTable.productId} = p.${ProductTable.id}
-      WHERE td.${TransactionDetailTable.transactionId} = ?
-      ORDER BY td.${TransactionDetailTable.id}
+    SELECT
+      td.*
+    FROM ${TransactionDetailTable.table} td
+    WHERE td.${TransactionDetailTable.transactionId} = ?
+    ORDER BY td.${TransactionDetailTable.id}
     ''',
-      [transactionId],
+      [id],
     );
+    final data = Map<String, dynamic>.from(transaction.first);
+    data['details'] = details;
+
+    return TransactionModel.fromMap(data);
   }
 
   Future<void> delete(int transactionId) async {
@@ -167,13 +174,29 @@ class TransactionLocalDatasource {
     }
 
     if (startDate != null) {
+      final startOfDay = DateTime(
+        startDate.year,
+        startDate.month,
+        startDate.day,
+      );
+
       where.add('${TransactionTable.createdAt} >= ?');
-      args.add(startDate.toIso8601String());
+      args.add(startOfDay.toIso8601String());
     }
 
     if (endDate != null) {
+      final endOfDay = DateTime(
+        endDate.year,
+        endDate.month,
+        endDate.day,
+        23,
+        59,
+        59,
+        999,
+      );
+
       where.add('${TransactionTable.createdAt} <= ?');
-      args.add(endDate.toIso8601String());
+      args.add(endOfDay.toIso8601String());
     }
 
     final whereSql = where.isEmpty ? '' : 'WHERE ${where.join(' AND ')}';

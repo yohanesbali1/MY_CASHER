@@ -12,11 +12,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       if (event is GetTransactionEvent) {
         await _onGetData(event, emit);
       }
+      if (event is FilterTransactionEvent) {
+        await _onFilterData(event, emit);
+      }
       if (event is GetTransactionListEvent) {
         await _onGetDataTransaction(event, emit);
       }
       if (event is GetSumTransactionEvent) {
         await _onGetSUMTransaction(event, emit);
+      }
+      if (event is ShowTransactionEvent) {
+        await _onShowTotalTransaction(event, emit);
       }
     });
   }
@@ -34,6 +40,21 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           now.month + 1,
           1,
         ).subtract(const Duration(milliseconds: 1)),
+      ),
+    );
+    await Future.delayed(const Duration(seconds: 1));
+    await _onGetSUMTransaction(GetSumTransactionEvent(), emit);
+    await _onGetDataTransaction(GetTransactionListEvent(), emit);
+    emit(state.copyWith(isLoading: false));
+  }
+
+  Future<void> _onFilterData(FilterTransactionEvent event, Emitter emit) async {
+    emit(
+      state.copyWith(
+        isLoading: true,
+        page: event.page,
+        startDate: event.startDate,
+        endDate: event.endDate,
       ),
     );
     await Future.delayed(const Duration(seconds: 1));
@@ -69,5 +90,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         totalRevenue: data?.totalRevenue,
       ),
     );
+  }
+
+  Future<void> _onShowTotalTransaction(
+    ShowTransactionEvent event,
+    Emitter emit,
+  ) async {
+    print('id ${event.id}');
+    final data = await transactionRepository.getById(event.id);
+    print('data $data');
+    emit(state.copyWith(showTransaction: data));
   }
 }

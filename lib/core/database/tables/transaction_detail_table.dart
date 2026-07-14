@@ -8,6 +8,8 @@ class TransactionDetailTable {
 
   static const id = 'id';
   static const transactionId = 'transaction_id';
+  static const productIcon = 'product_icon';
+  static const productName = 'product_name';
   static const productId = 'product_id';
   static const quantity = 'quantity';
   static const price = 'price';
@@ -18,7 +20,9 @@ class TransactionDetailTable {
     CREATE TABLE $table(
       $id INTEGER PRIMARY KEY AUTOINCREMENT,
       $transactionId INTEGER NOT NULL,
-      $productId INTEGER NOT NULL,
+      $productIcon TEXT NOT NULL,
+      $productName TEXT NOT NULL,
+      $productId INTEGER,
       $quantity INTEGER NOT NULL,
       $price REAL NOT NULL,
       $subtotal REAL NOT NULL,

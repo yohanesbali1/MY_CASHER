@@ -11,6 +11,7 @@ class TransactionRepository {
     required double total,
     required double payment,
     required double change,
+    required String payment_method,
     required List<CartItemModel> cartItems,
   }) async {
     final num_truncation = await _datasource.generateInvoiceNumber();
@@ -20,6 +21,7 @@ class TransactionRepository {
       payment: payment,
       change: change,
       cartItems: cartItems,
+      payment_method: payment_method,
     );
   }
 
@@ -32,12 +34,8 @@ class TransactionRepository {
     return data;
   }
 
-  Future<Map<String, dynamic>?> getById(int id) async {
+  Future<TransactionModel?> getById(int id) async {
     return await _datasource.getById(id);
-  }
-
-  Future<List<Map<String, dynamic>>> getDetails(int transactionId) async {
-    return await _datasource.getDetails(transactionId);
   }
 
   Future<void> delete(int transactionId) async {

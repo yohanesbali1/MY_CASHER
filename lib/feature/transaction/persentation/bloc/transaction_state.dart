@@ -17,6 +17,8 @@ class TransactionState {
   final int totalItem;
   final int totalTransaction;
 
+  final TransactionModel? showTransaction;
+
   static const _unset = Object();
 
   const TransactionState({
@@ -31,6 +33,7 @@ class TransactionState {
     this.totalRevenue = 0,
     this.totalItem = 0,
     this.totalTransaction = 0,
+    this.showTransaction,
   });
 
   TransactionState copyWith({
@@ -45,6 +48,7 @@ class TransactionState {
     double? totalRevenue,
     int? totalItem,
     int? totalTransaction,
+    Object? showTransaction = _unset,
   }) {
     return TransactionState(
       transactionData: data ?? transactionData,
@@ -52,12 +56,19 @@ class TransactionState {
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
-      search: search == _unset ? this.search : (search as String? ?? ''),
-      startDate: startDate == _unset ? this.startDate : startDate as DateTime?,
-      endDate: endDate == _unset ? this.endDate : endDate as DateTime?,
+      search: identical(search, _unset)
+          ? this.search
+          : (search as String? ?? ''),
+      startDate: identical(startDate, _unset)
+          ? this.startDate
+          : startDate as DateTime?,
+      endDate: identical(endDate, _unset) ? this.endDate : endDate as DateTime?,
       totalRevenue: totalRevenue ?? this.totalRevenue,
       totalItem: totalItem ?? this.totalItem,
       totalTransaction: totalTransaction ?? this.totalTransaction,
+      showTransaction: identical(showTransaction, _unset)
+          ? this.showTransaction
+          : showTransaction as TransactionModel?,
     );
   }
 }

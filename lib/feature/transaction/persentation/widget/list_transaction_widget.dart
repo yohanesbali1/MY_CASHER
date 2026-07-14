@@ -10,6 +10,7 @@ class TransactionListWidget extends StatelessWidget {
     required this.hasReachedMax,
     required this.isLoading,
     required this.isLoadingMore,
+    required this.onTap,
   });
 
   final List<TransactionModel> transactions;
@@ -17,6 +18,7 @@ class TransactionListWidget extends StatelessWidget {
   final bool hasReachedMax;
   final bool isLoading;
   final bool isLoadingMore;
+  final Function(TransactionModel) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +68,10 @@ class TransactionListWidget extends StatelessWidget {
 
         final transaction = transactions[index];
 
-        return TransactionItemWidget(item: transaction);
+        return GestureDetector(
+          onTap: () => onTap(transaction),
+          child: TransactionItemWidget(item: transaction),
+        );
       },
     );
   }

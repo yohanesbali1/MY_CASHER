@@ -19,6 +19,7 @@ class TransactionFilterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
     final divider = Theme.of(context).dividerColor;
 
     final isFiltered = startDate != null || endDate != null;
@@ -60,7 +61,7 @@ class TransactionFilterWidget extends StatelessWidget {
                       size: 18,
                       color: isFiltered
                           ? color.primary
-                          : color.onSurfaceVariant,
+                          : color.onSurfaceVariant.withValues(alpha: .5),
                     ),
                     const SizedBox(width: 8),
 
@@ -72,9 +73,9 @@ class TransactionFilterWidget extends StatelessWidget {
                             : "Semua tanggal",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: text.bodySmall?.copyWith(
                           fontSize: 13,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                           color: isFiltered
                               ? color.primary
                               : color.onSurfaceVariant,

@@ -249,6 +249,7 @@ class PosBloc extends Bloc<PosEvent, PosState> {
         total: state.total,
         payment: event.cash,
         change: event.change,
+        payment_method: state.method == PaymentMethod.cash ? 'cash' : 'qris',
         cartItems: state.cartItems,
       );
       await _onResetPos(ResetPos(), emit);

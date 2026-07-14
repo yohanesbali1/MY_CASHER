@@ -12,12 +12,14 @@ class RecentTransactionBaseWidget extends StatefulWidget {
     required this.hasReachedMax,
     required this.isLoading,
     required this.isLoadingMore,
+    required this.onTap,
   });
 
   final List<TransactionModel> transactions;
   final bool hasReachedMax;
   final bool isLoading;
   final bool isLoadingMore;
+  final void Function(TransactionModel) onTap;
   @override
   State<RecentTransactionBaseWidget> createState() =>
       _RecentTransactionWidgetState();
@@ -138,6 +140,7 @@ class _RecentTransactionWidgetState extends State<RecentTransactionBaseWidget> {
               hasReachedMax: widget.hasReachedMax,
               isLoading: widget.isLoading,
               isLoadingMore: widget.isLoadingMore,
+              onTap: (payload) => widget.onTap(payload),
             ),
           ),
         ),
